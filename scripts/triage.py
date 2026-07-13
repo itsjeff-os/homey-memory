@@ -40,6 +40,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 QUEUE_DIR = REPO_ROOT / "intake" / "queue"
 PROCESSING_DIR = REPO_ROOT / "intake" / "processing"
 UNSORTED_DIR = REPO_ROOT / "intake" / "unsorted"
+UNSORTED_SECTION = "intake/unsorted"
 RULES_FILE = REPO_ROOT / "intake" / "triage-rules.yaml"
 
 # ---------------------------------------------------------------------------
@@ -126,7 +127,7 @@ def classify(
                 return section, f"keyword match: '{kw}'"
 
     # 3. No match — unsorted
-    return "intake/unsorted", "no matching rules"
+    return UNSORTED_SECTION, "no matching rules"
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +226,7 @@ def triage_file(
     shutil.move(str(processing_path), str(final_path))
 
     # Update destination README
-    if section != "intake/unsorted":
+    if section != UNSORTED_SECTION:
         update_section_readme(dest_dir, final_path.name, front_matter)
 
     return final_path.name, section, reason
