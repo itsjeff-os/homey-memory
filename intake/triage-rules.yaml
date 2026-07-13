@@ -1,0 +1,122 @@
+# Triage Rules
+# Maps tags and destination hints to repo sections.
+# Used by scripts/triage.py to auto-route intake/queue files.
+#
+# Each rule has:
+#   section  – target directory relative to repo root
+#   tags     – if ANY of these appear in front-matter tags, the file matches
+#   keywords – if ANY of these appear in the filename or body, the file matches (case-insensitive)
+#
+# Rules are evaluated top-to-bottom; first match wins.
+# Files with an explicit `destination:` front-matter field bypass these rules entirely.
+
+rules:
+  - section: memory/supabase
+    tags: [supabase, pgvector, postgres]
+    keywords: [supabase, pgvector]
+
+  - section: memory/chroma
+    tags: [chroma, chromadb]
+    keywords: [chroma, chromadb]
+
+  - section: memory/zep
+    tags: [zep]
+    keywords: [zep]
+
+  - section: memory
+    tags: [memory, vector, embedding, embeddings]
+    keywords: [memory, vector-store, embedding]
+
+  - section: architecture/schemas
+    tags: [schema, openapi, json-schema, data-model]
+    keywords: [schema, openapi]
+
+  - section: architecture/handoffs
+    tags: [handoff, handoffs, context-handoff]
+    keywords: [handoff]
+
+  - section: architecture/history
+    tags: [adr, decision, architecture-history]
+    keywords: [adr, decision-record]
+
+  - section: architecture/references
+    tags: [reference, paper, research]
+    keywords: [reference, paper]
+
+  - section: architecture
+    tags: [architecture, design, system-design]
+    keywords: [architecture, system-design]
+
+  - section: home-assistant/automations
+    tags: [ha-automation, ha-script, ha-blueprint, ha-scene]
+    keywords: [automation.yaml, blueprint]
+
+  - section: home-assistant/corpus
+    tags: [ha-entity, ha-domain, ha-corpus]
+    keywords: [entity, domain]
+
+  - section: home-assistant
+    tags: [homeassistant, home-assistant, ha]
+    keywords: [home-assistant, homeassistant]
+
+  - section: cloudflare-workers
+    tags: [worker, cloudflare, wrangler, cf-worker]
+    keywords: [cloudflare, wrangler, worker]
+
+  - section: chunking/strategies
+    tags: [chunking-strategy, chunk-strategy]
+    keywords: [chunk-strategy, chunking-strategy]
+
+  - section: chunking
+    tags: [chunking, chunk, splitting]
+    keywords: [chunking, chunk, splitting]
+
+  - section: workflows/n8n
+    tags: [n8n, n8n-workflow]
+    keywords: [n8n]
+
+  - section: workflows/ifttt
+    tags: [ifttt]
+    keywords: [ifttt]
+
+  - section: workflows
+    tags: [workflow, automation-workflow]
+    keywords: [workflow]
+
+  - section: corpus/source-docs
+    tags: [source, raw, source-doc]
+    keywords: [source-doc]
+
+  - section: corpus/retrieval
+    tags: [retrieval, indexed, chunked-doc]
+    keywords: [retrieval]
+
+  - section: corpus
+    tags: [corpus, document, docs-corpus]
+    keywords: [corpus]
+
+  - section: codex/builds
+    tags: [codex-build, prompt-build, system-message]
+    keywords: [codex-build, prompt-build]
+
+  - section: codex
+    tags: [codex, prompt, prompt-engineering]
+    keywords: [codex, prompt-engineering]
+
+  - section: scripts
+    tags: [script, utility, migration, ingestion]
+    keywords: [script, utility]
+
+  - section: packages
+    tags: [package, library, shared]
+    keywords: [package, library]
+
+  - section: projects
+    tags: [project]
+    keywords: [project]
+
+  - section: docs
+    tags: [doc, note, meeting, guide]
+    keywords: [meeting-notes, guide]
+
+# Fallback: files that match no rules go to intake/unsorted
