@@ -14,12 +14,34 @@ New content arrives
        ▼
   intake/queue/          ← Drop it here. No rules, no structure required.
        │
-       ▼  (triage)
+       ▼  (auto-triage or manual)
   intake/processing/     ← Being reviewed, tagged, or cleaned up.
        │
        ▼  (filed)
   Final destination      ← Moved to the appropriate top-level section.
 ```
+
+### Automated Triage
+
+Run the triage script to automatically classify and route queued files:
+
+```bash
+python scripts/triage.py                  # triage all queued files
+python scripts/triage.py --dry-run        # preview without moving anything
+python scripts/triage.py --verbose        # show classification reasoning
+python scripts/triage.py --file FILE      # triage a single file
+```
+
+The script:
+1. Reads each file in `intake/queue/`
+2. Checks for an explicit `destination:` in YAML front-matter
+3. Falls back to tag and keyword matching using [`triage-rules.yaml`](./triage-rules.yaml)
+4. Moves the file to the matched section (via `processing/` as a staging step)
+5. Appends a "Filed Items" entry to the destination section's README
+
+Files that match no rules are moved to `intake/unsorted/`.
+
+**Requires:** Python 3.10+, PyYAML (`pip install pyyaml`)
 
 ### Unsorted
 
