@@ -8,6 +8,7 @@
 
 | Section | Path | Description |
 |---------|------|-------------|
+| [**Intake**](#intake) | [`intake/`](./intake/) | **Start here** — drop anything, organise later |
 | [Projects](#projects) | [`projects/`](./projects/) | Individual project roots |
 | [Cloudflare Workers](#cloudflare-workers) | [`cloudflare-workers/`](./cloudflare-workers/) | Worker scripts, bindings, and configs |
 | [Memory](#memory) | [`memory/`](./memory/) | Vector store and memory backend scaffolds |
@@ -24,6 +25,12 @@
 ---
 
 ## Sections
+
+### Intake
+[`intake/`](./intake/) — **The landing zone.** Drop content here first, organise later. Separates capture from categorisation so nothing gets lost.
+- [`intake/queue/`](./intake/queue/) — Raw intake: anything new goes here, no rules
+- [`intake/processing/`](./intake/processing/) — Being triaged, tagged, or cleaned up
+- [`intake/unsorted/`](./intake/unsorted/) — Reviewed but no clear destination yet
 
 ### Projects
 [`projects/`](./projects/) — Top-level project folders. Each sub-directory is a self-contained project with its own README and build artifacts.
