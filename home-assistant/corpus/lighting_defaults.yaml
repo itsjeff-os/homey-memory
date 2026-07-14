@@ -1,0 +1,518 @@
+input_boolean:
+  guest_mode:
+    name: Guest Mode
+    icon: mdi:account-group
+    initial: false
+  sleep_mode:
+    name: Sleep Mode
+    icon: mdi:sleep
+    initial: false
+  adaptive_lighting_pause:
+    name: Adaptive Lighting Pause
+    icon: mdi:pause-circle-outline
+    initial: false
+
+input_number:
+  default_on_brightness_pct:
+    name: Default On Brightness
+    icon: mdi:brightness-6
+    min: 1
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    initial: 55
+  default_on_kelvin:
+    name: Default On Kelvin
+    icon: mdi:temperature-kelvin
+    min: 2000
+    max: 6500
+    step: 50
+    unit_of_measurement: K
+    initial: 2900
+  night_brightness_cap:
+    name: Night Brightness Cap
+    icon: mdi:weather-night
+    min: 1
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    initial: 22
+  default_fade_in_seconds:
+    name: Default Fade In Seconds
+    icon: mdi:transfer-up
+    min: 0
+    max: 30
+    step: 0.1
+    unit_of_measurement: s
+    initial: 2.2
+  default_fade_out_seconds:
+    name: Default Fade Out Seconds
+    icon: mdi:transfer-down
+    min: 0
+    max: 30
+    step: 0.1
+    unit_of_measurement: s
+    initial: 5.5
+
+input_select:
+  orchestration_mode:
+    name: Orchestration Mode
+    icon: mdi:timeline-outline
+    options:
+      - auto
+      - uniform
+      - task_then_ambient
+      - ambient_then_task
+      - staged
+    initial: auto
+
+script:
+  lighting_defaults_room_on:
+    alias: Lighting Defaults - Room On
+    mode: restart
+    fields:
+      room:
+        description: Logical room key
+        example: core
+    variables:
+      room_key: "{{ room | default('') }}"
+      brightness_pct: "{{ states('input_number.default_on_brightness_pct') | int(55) }}"
+      kelvin: "{{ states('input_number.default_on_kelvin') | int(2900) }}"
+      fade_in: "{{ states('input_number.default_fade_in_seconds') | float(2.2) }}"
+      orchestration: "{{ states('input_select.orchestration_mode') }}"
+    sequence:
+      - choose:
+          - conditions: "{{ room_key == 'core' and orchestration in ['auto', 'task_then_ambient'] }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 800
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ambient
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'core' and orchestration == 'ambient_then_task' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ambient
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 800
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'core' and orchestration == 'staged' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_path
+                data:
+                  brightness_pct: "{{ [brightness_pct - 25, 8] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 500
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 700
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_ambient
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'core' and orchestration == 'uniform' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_open_plan
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'alpha' and orchestration in ['auto', 'task_then_ambient'] }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 700
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'alpha' and orchestration == 'ambient_then_task' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 700
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'alpha' and orchestration == 'uniform' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_bedroom
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'alpha' and orchestration == 'staged' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 900
+              - service: light.turn_on
+                target:
+                  entity_id: light.alpha_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 18, 8] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'beta' and orchestration in ['auto', 'task_then_ambient'] }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 700
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'beta' and orchestration == 'ambient_then_task' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 15, 10] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 700
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'beta' and orchestration == 'uniform' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_bedroom
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'beta' and orchestration == 'staged' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 900
+              - service: light.turn_on
+                target:
+                  entity_id: light.beta_bedroom
+                data:
+                  brightness_pct: "{{ [brightness_pct - 18, 8] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'pass' and orchestration == 'staged' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.pass_ceiling
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+              - delay:
+                  milliseconds: 600
+              - service: light.turn_on
+                target:
+                  entity_id: light.pass_hallway
+                data:
+                  brightness_pct: "{{ [brightness_pct - 20, 8] | max }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'pass' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.pass_hallway
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'kitchen' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.core_kitchen
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'chaos' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.chaos_laundry
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'splash' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.splash_bathroom
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+          - conditions: "{{ room_key == 'throne' }}"
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.throne_bathroom
+                data:
+                  brightness_pct: "{{ brightness_pct }}"
+                  kelvin: "{{ kelvin }}"
+                  transition: "{{ fade_in }}"
+
+  lighting_defaults_room_off:
+    alias: Lighting Defaults - Room Off
+    mode: restart
+    fields:
+      room:
+        description: Logical room key
+        example: core
+    variables:
+      room_key: "{{ room | default('') }}"
+      fade_out: "{{ states('input_number.default_fade_out_seconds') | float(5.5) }}"
+      orchestration: "{{ states('input_select.orchestration_mode') }}"
+    sequence:
+      - choose:
+          - conditions: "{{ room_key == 'core' and orchestration in ['auto', 'task_then_ambient', 'uniform'] }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_open_plan
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'core' and orchestration == 'ambient_then_task' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_ambient
+                data:
+                  transition: "{{ fade_out }}"
+              - delay:
+                  milliseconds: 600
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_ceiling
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'core' and orchestration == 'staged' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_ambient
+                data:
+                  transition: "{{ fade_out }}"
+              - delay:
+                  milliseconds: 500
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_ceiling
+                data:
+                  transition: "{{ fade_out }}"
+              - delay:
+                  milliseconds: 400
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_path
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'alpha' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.alpha_bedroom
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'beta' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.beta_bedroom
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'pass' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.pass_hallway
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'kitchen' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.core_kitchen
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'chaos' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.chaos_laundry
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'splash' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.splash_bathroom
+                data:
+                  transition: "{{ fade_out }}"
+          - conditions: "{{ room_key == 'throne' }}"
+            sequence:
+              - service: light.turn_off
+                target:
+                  entity_id: light.throne_bathroom
+                data:
+                  transition: "{{ fade_out }}"
+
+  lighting_defaults_all_off:
+    alias: Lighting Defaults - All Off
+    mode: single
+    sequence:
+      - service: script.lighting_defaults_room_off
+        data:
+          room: core
+      - service: script.lighting_defaults_room_off
+        data:
+          room: kitchen
+      - service: script.lighting_defaults_room_off
+        data:
+          room: alpha
+      - service: script.lighting_defaults_room_off
+        data:
+          room: beta
+      - service: script.lighting_defaults_room_off
+        data:
+          room: pass
+      - service: script.lighting_defaults_room_off
+        data:
+          room: splash
+      - service: script.lighting_defaults_room_off
+        data:
+          room: throne
+      - service: script.lighting_defaults_room_off
+        data:
+          room: chaos
+
+automation:
+  - id: lighting_defaults_apply_on_room_activation
+    alias: Lighting Defaults - Apply On Room Activation
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id:
+          - light.core_open_plan
+          - light.core_kitchen
+          - light.alpha_bedroom
+          - light.beta_bedroom
+          - light.pass_hallway
+          - light.splash_bathroom
+          - light.throne_bathroom
+          - light.chaos_laundry
+        from: "off"
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.adaptive_lighting_pause
+        state: "off"
+    action:
+      - variables:
+          room_key: >-
+            {% set mapping = {
+              'light.core_open_plan': 'core',
+              'light.core_kitchen': 'kitchen',
+              'light.alpha_bedroom': 'alpha',
+              'light.beta_bedroom': 'beta',
+              'light.pass_hallway': 'pass',
+              'light.splash_bathroom': 'splash',
+              'light.throne_bathroom': 'throne',
+              'light.chaos_laundry': 'chaos'
+            } %}
+            {{ mapping.get(trigger.entity_id, '') }}
+      - service: script.lighting_defaults_room_on
+        data:
+          room: "{{ room_key }}"

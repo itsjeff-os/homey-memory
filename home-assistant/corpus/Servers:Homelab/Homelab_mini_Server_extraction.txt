@@ -1,0 +1,720 @@
+{
+  "schema": {
+    "name": "homelab_fact_extraction",
+    "version": "1.0",
+    "extracted_utc": "2026-02-03"
+  },
+  "sources": {
+    "src_system_state_snapshot_md": {
+      "title": "System State Snapshot — Jan 6, 2026 14:00 UTC",
+      "type": "markdown",
+      "created_utc": "2026-01-06T14:00:00Z",
+      "updated_utc": "2026-01-06T14:03:00Z",
+      "category": "Context, System-state",
+      "source": "Manual"
+    },
+    "src_smart_home_inventory_md": {
+      "title": "Smart Home Devices & Hubs — Full Inventory",
+      "type": "markdown",
+      "created_local": "2026-01-13 01:36",
+      "updated_local": "2026-01-13 01:39",
+      "category": "Smart Home",
+      "status": "Active",
+      "source": "Manual"
+    },
+    "src_device_entity_inventory_pdf": {
+      "title": "Workjing verson - with map flat filer",
+      "type": "pdf",
+      "pages_parsed": 7
+    },
+    "src_network_infrastructure_md": {
+      "title": "Network Infrastructure — Topology & Evolution",
+      "type": "markdown",
+      "created_local": "2026-01-13 01:36",
+      "updated_local": "2026-01-13 01:39",
+      "category": "Infrastructure",
+      "status": "Active",
+      "source": "Manual"
+    },
+    "src_networking_brief_docx": {
+      "title": "Let’s talk Networking - Brief Sheet",
+      "type": "docx"
+    }
+  },
+  "facts": {
+    "compute_host": {
+      "as_of_timestamp_utc": "2026-01-06T14:00:00Z",
+      "device_model": {
+        "value": "GMKtec Mini PC N95",
+        "sources": ["src_system_state_snapshot_md", "src_network_infrastructure_md"]
+      },
+      "cpu": {
+        "value": "Intel N95",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "ram_gb": {
+        "value": 16,
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "storage_gb": {
+        "value": 512,
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "boot_type": {
+        "value": "UEFI",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "os": {
+        "name": {
+          "value": "Ubuntu",
+          "sources": ["src_system_state_snapshot_md"]
+        },
+        "version": {
+          "value": "24.04.3 LTS",
+          "sources": ["src_system_state_snapshot_md"]
+        },
+        "kernel": {
+          "value": "6.8.0-90-generic",
+          "sources": ["src_system_state_snapshot_md"]
+        }
+      }
+    },
+    "host_network_config": {
+      "as_of_timestamp_utc": "2026-01-06T14:00:00Z",
+      "hostname": {
+        "value": "servers",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "ipv4": {
+        "value": "192.168.1.39",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "ipv6": {
+        "value": "fdac:f4c8:d98a:9d19:e251:d8ff:fe1e:a074",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "gateway_ipv4": {
+        "value": "192.168.1.1",
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "firewall": {
+        "value": "ufw enabled, allow ssh",
+        "sources": ["src_system_state_snapshot_md"]
+      }
+    },
+    "docker_state": {
+      "as_of_timestamp_utc": "2026-01-06T14:00:00Z",
+      "compose_projects": [
+        {
+          "name": "homeassistant",
+          "status": "running",
+          "config_file": "/srv/homeassistant/docker-compose.yml",
+          "volumes": ["/srv/homeassistant/config:/config"],
+          "sources": ["src_system_state_snapshot_md"]
+        }
+      ],
+      "running_containers": [
+        {
+          "name": "homeassistant",
+          "image": "ghcr.io/home-assistant/home-assistant:stable",
+          "status": "running",
+          "sources": ["src_system_state_snapshot_md"]
+        }
+      ],
+      "stopped_containers_count": {
+        "value": 0,
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "dangling_images_count": {
+        "value": 0,
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "docker_volumes_count": {
+        "value": 0,
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "notes": [
+        {
+          "value": "All dead containers and unused volumes/images removed",
+          "sources": ["src_system_state_snapshot_md"]
+        },
+        {
+          "value": "No stray Compose files in ~/",
+          "sources": ["src_system_state_snapshot_md"]
+        }
+      ]
+    },
+    "services": {
+      "gpt_server_agent": {
+        "location": {
+          "value": "~/gpt-server-agent",
+          "sources": ["src_system_state_snapshot_md"]
+        },
+        "type": {
+          "value": "nodejs",
+          "sources": ["src_system_state_snapshot_md"]
+        },
+        "status": {
+          "value": "inactive",
+          "sources": ["src_system_state_snapshot_md"]
+        }
+      }
+    },
+    "filesystem": {
+      "as_of_timestamp_utc": "2026-01-06T14:00:00Z",
+      "key_dirs": {
+        "value": ["/srv/ai-stack", "/srv/homeassistant", "~/gpt-server-agent"],
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "key_files": {
+        "value": ["cloudflared.deb", "package.json", "package-lock.json"],
+        "sources": ["src_system_state_snapshot_md"]
+      },
+      "disk_usage_percent": {
+        "value": 2.4,
+        "sources": ["src_system_state_snapshot_md"]
+      }
+    },
+    "health_checks": {
+      "as_of_timestamp_utc": "2026-01-06T14:00:00Z",
+      "homeassistant": {
+        "value": "healthy",
+        "sources": ["src_system_state_snapshot_md"]
+      }
+    },
+    "home_automation_platforms_and_hubs": {
+      "platforms_listed": [
+        {
+          "name": "Home Assistant",
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Apple HomeKit",
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Google Home",
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        }
+      ],
+      "hardware_hubs_and_bridges": [
+        {
+          "name": "Aqara M3 Hub",
+          "status": "production",
+          "connectivity": ["wired ethernet"],
+          "integration_paths_listed": ["Home Assistant", "Apple HomeKit (Matter)", "Aqara app"],
+          "sources": ["src_smart_home_inventory_md", "src_network_infrastructure_md", "src_networking_brief_docx", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Philips Hue Bridge Pro",
+          "status": "production",
+          "connectivity": ["wired ethernet"],
+          "integration_paths_listed": ["Home Assistant", "Apple HomeKit", "Hue app"],
+          "sources": ["src_smart_home_inventory_md", "src_network_infrastructure_md", "src_networking_brief_docx", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Switchbot Hub 3",
+          "status_by_source": [
+            {
+              "status": "production",
+              "sources": ["src_smart_home_inventory_md"]
+            },
+            {
+              "status": "listed_with_note_debating_return",
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ],
+          "connectivity": ["wifi"],
+          "integration_paths_listed": ["Home Assistant", "Switchbot app"],
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Apple HomeKit hubs",
+          "items": [
+            {
+              "device": "Apple TV",
+              "count": 2,
+              "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+            },
+            {
+              "device": "HomePod (all types)",
+              "count": 3,
+              "sources": ["src_smart_home_inventory_md"]
+            }
+          ],
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Google Nest Mini",
+          "count": 1,
+          "status": "production",
+          "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"]
+        },
+        {
+          "name": "Home Assistant Green",
+          "listed": true,
+          "sources": ["src_device_entity_inventory_pdf", "src_networking_brief_docx"]
+        }
+      ]
+    },
+    "smart_home_device_inventory_counts": {
+      "presence_motion_contact_sensors": {
+        "Hue Motion Sensor": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aqara Motion Sensor": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aqara FP1E Presence Sensor": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aqara FP2 Presence Sensor": [
+          { "count": 3, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aqara Door/Window Sensor": [
+          { "count": 7, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aqara Matter-compatible door/contact sensor": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "switches_and_buttons": {
+        "Aqara Wireless H1 Switch": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Hue Dimmer Switch": [
+          { "count": 4, "sources": ["src_smart_home_inventory_md"] },
+          { "count": 2, "sources": ["src_device_entity_inventory_pdf"] }
+        ],
+        "Hue Tap Dial Switch": [
+          { "count": 3, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Hue Smart Button": [
+          { "count": 3, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Switchbot Switch Tongue": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md"] },
+          { "count": 2, "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "lighting": {
+        "Govee Colour Light Strip": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md"] }
+        ],
+        "Philips Hue lighting (flat coverage)": [
+          { "listed": true, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "window_treatments": {
+        "Aqara Curtain Controller E1": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Switchbot Roller Blinds": [
+          { "variant_counts": { "Grey L": 2, "Grey M": 2 }, "sources": ["src_smart_home_inventory_md"] },
+          { "count": 2, "label": "Switchbot adjustable Grey Roller Smart Shades", "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "climate_and_air": {
+        "Dreo Smart Humidifier": [
+          { "count": 2, "models": ["HM713S", "HM311S"], "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Levoit Dual 200S Humidifier": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Levoit Air 300S Purifier": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Dreo Smart Portable AC": [
+          { "count": 1, "capacity_btu": 14000, "model_or_series": "516S", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Meaco Smart Portable AC": [
+          { "count": 1, "capacity_btu": 12000, "model_or_series": "Pro CH", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "scent": {
+        "Muji Diffuser": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aera Full-Size": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Aera Mini": [
+          { "count": 4, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Neom mini aroma diffuser": [
+          { "listed": true, "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "health_and_utility": {
+        "Withings Sleep Mat": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Oura Gen 4 Ring": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Larq Pitcher & Bottle": [
+          { "listed": true, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Eufy Smart Scale": [
+          { "listed": true, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Eufy S1 Omni Pro RoboVac & Mop": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ]
+      },
+      "media": {
+        "Apple TV": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "HomePod (full-size)": [
+          { "count": 1, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "HomePod Mini": [
+          { "count": 2, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Samsung Serif TV": [
+          { "listed": true, "size_in": 50, "color": "Ivy Green", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Samsung UHD TV": [
+          { "listed": true, "size_in": 50, "color": "Black", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ],
+        "Samsung Q700D soundbar with subwoofer": [
+          { "listed": true, "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }
+        ]
+      }
+    },
+    "room_mapping": {
+      "rooms_listed": [
+        { "name": "Open Plan", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf", "src_networking_brief_docx"] },
+        { "name": "Bedroom 1", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf", "src_networking_brief_docx"] },
+        { "name": "Bedroom 2", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf", "src_networking_brief_docx"] },
+        { "name": "Hallway", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf", "src_networking_brief_docx"] },
+        { "name": "Laundry / Utility", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf", "src_networking_brief_docx"] }
+      ],
+      "open_plan": {
+        "lighting": {
+          "hue_ceiling_lights": [
+            {
+              "count_breakdown": { "white_and_colour": 8, "white_ambiance_kitchen": 2 },
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ],
+          "hue_gradient_or_lamps_listed": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ]
+        },
+        "presence": {
+          "aqara_fp2": [
+            {
+              "count": 1,
+              "zone_mapping_listed": ["Room", "Living/Dining/Kitchen Zone"],
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ]
+        },
+        "window_treatments": {
+          "aqara_curtain_controller_e1": [
+            {
+              "count": 2,
+              "paired_as_set": true,
+              "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"]
+            }
+          ]
+        },
+        "climate": {
+          "portable_ac_listed": [
+            {
+              "device": "Meaco Smart Portable AC",
+              "capacity_btu": 12000,
+              "notes": "AC & Heater",
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ]
+        },
+        "media": {
+          "apple_tv": [
+            { "notes": "Ethernet", "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ],
+          "tv": [
+            { "device": "Samsung Serif", "size_in": 50, "year_listed": 2024, "color": "Ivy Green", "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "audio": [
+            { "device": "HomePod (full-size)", "notes": "Black", "sources": ["src_device_entity_inventory_pdf"] },
+            { "device": "Samsung Q700D soundbar + wireless sub", "status": "in storage / not in use", "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        }
+      },
+      "bedroom_1_and_bathroom_1": {
+        "lighting": {
+          "bedroom_ceiling_lights": [
+            { "count": 6, "type": "white_and_colour", "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "bathroom_1_ceiling_lights_entity_ids": [
+            {
+              "entity_ids": [
+                "light.ceiling_bathroom1_above_sink",
+                "light.ceiling_bathroom_1_above_door",
+                "light.ceiling_bathroom_1_above_shower",
+                "light.ceiling_bathroom_1_above_toilet"
+              ],
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ],
+          "bedroom_1_entity_ids": [
+            {
+              "entity_ids": [
+                "light.ceiling_bedroom_1_bl",
+                "light.ceiling_bedroom_1_bm",
+                "light.ceiling_bedroom_1_br",
+                "light.ceiling_bedroom_1_tl",
+                "light.ceiling_bedroom_1_tm",
+                "light.ceiling_bedroom_1_tr",
+                "light.gradient_bed_strip_left",
+                "light.gradient_bed_strip_right",
+                "light.small_ola_whitborg_lamp",
+                "light.xl_ola_whitborg_lamp"
+              ],
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ]
+        },
+        "presence_and_sleep": {
+          "aqara_fp2": [
+            {
+              "zone_mapping_listed": ["Bed Zone", "Wardrobe Zone", "Door Zone"],
+              "sources": ["src_device_entity_inventory_pdf"]
+            }
+          ],
+          "withings_sleep_mat": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ],
+          "door_sensors_listed": [
+            { "bedroom_door_sensor": true, "bathroom_door_sensor": true, "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "environment": {
+          "levoit_air_300s": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ],
+          "dreo_humidifier_hm713s": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ],
+          "aera_devices_listed": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "portable_ac_listed_with_pending_decision_note": [
+            { "devices": ["Dreo 14000BTU 516S", "Meaco 12000BTU Pro CH"], "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "window_treatments": {
+          "switchbot_roller_blinds": [
+            { "count": 2, "variant": "Grey L", "width_in": 55, "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "assistants_and_media": {
+          "homepod_mini": [{ "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }],
+          "google_nest_mini": [{ "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }],
+          "tv": [{ "device": "Samsung UHD TV", "size_in": 50, "color": "Black", "sources": ["src_smart_home_inventory_md", "src_device_entity_inventory_pdf"] }]
+        }
+      },
+      "bedroom_2_and_bathroom_2": {
+        "presence": {
+          "fp2_or_fp1e_pending_note": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "lighting": {
+          "bedroom_2_white_ambiance": [
+            { "count": 6, "notes": "x4 in bedroom & x2 in adjacent wardrobe", "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "bathroom_2_white_ambiance": [
+            { "count": 5, "notes": "hue motion sensor on ceiling", "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "contact_sensors": {
+          "bedroom_2_door_sensor_listed": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ]
+        }
+      },
+      "hallway": {
+        "lighting": {
+          "hue_white_ambiance": [
+            { "count": 5, "notes": "x2 front stretch, x3 rear stretch", "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "sensors": {
+          "aqara_motion_sensors_pending_note": [
+            { "count": 2, "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "fp2_or_fp1e_pending_note": [
+            { "listed": true, "sources": ["src_device_entity_inventory_pdf"] }
+          ],
+          "front_door_contact_sensor": [
+            { "label": "Matter P2 Front Door Contact Sensor", "count": 1, "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        }
+      },
+      "laundry_utility": {
+        "devices": {
+          "eufy_s1_omni_pro": [
+            { "count": 1, "notes": "dock listed here", "sources": ["src_device_entity_inventory_pdf", "src_smart_home_inventory_md"] }
+          ]
+        },
+        "sensors": {
+          "door_sensors_listed": [
+            { "laundry_door_sensor": true, "storage_door_sensor": true, "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "lighting": {
+          "ceiling_lights": [
+            { "laundry_ceiling_light": "White E27", "sources": ["src_device_entity_inventory_pdf"] },
+            { "storage_ceiling_light": "White E27", "sources": ["src_device_entity_inventory_pdf"] }
+          ]
+        },
+        "hub_location_note": [
+          { "value": "All Hubs – HA/Aqara M3", "sources": ["src_device_entity_inventory_pdf"] },
+          { "value": "Aqara M3 Hub + Hue Bridge Pro + Switchbot Hub 3 + network equipment located here", "sources": ["src_smart_home_inventory_md"] }
+        ]
+      }
+    },
+    "network_facts": {
+      "internet_service": {
+        "provider": [
+          { "value": "Hyperoptic", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] }
+        ],
+        "advertised_speed": [
+          { "value": "1 Gbps Fibre", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] }
+        ],
+        "static_ip": [
+          { "value": "static IP assigned", "sources": ["src_network_infrastructure_md"] },
+          { "value": "static IP with Hyperoptic established (configuration between devices described as unclear)", "sources": ["src_networking_brief_docx"] }
+        ]
+      },
+      "cloudflare": {
+        "tunnel_established": [
+          { "value": true, "sources": ["src_network_infrastructure_md"] },
+          { "value": true, "notes": "tunnel described as established on macbook", "sources": ["src_networking_brief_docx"] }
+        ],
+        "domains_listed": [
+          { "value": ["itsjeff.org", "flat-affairs.org"], "sources": ["src_network_infrastructure_md"] },
+          { "value": ["itsdomain.org"], "sources": ["src_networking_brief_docx"] }
+        ]
+      },
+      "primary_gateway_controller_multiple_claims": [
+        {
+          "gateway": "Unifi Cloud Gateway Ultra",
+          "wifi_ap": "Unifi 6+ AP",
+          "status": "production",
+          "sources": ["src_network_infrastructure_md"]
+        },
+        {
+          "gateway": "Eero Pro 6E",
+          "role": "Router / Main Gateway",
+          "sources": ["src_networking_brief_docx"]
+        },
+        {
+          "gateway": "Eero Pro 6E",
+          "role": "Gateway",
+          "sources": ["src_device_entity_inventory_pdf"]
+        }
+      ],
+      "switching_and_poe_hardware_listed": [
+        { "model": "TP-Link LS105GP", "notes": "5-port, 4x PoE+", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] },
+        { "model": "TP-Link LS108GP", "notes": "8-port unmanaged", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] },
+        { "model": "TP-Link TL-SG108", "notes": "8-port unmanaged, non-PoE", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] },
+        { "model": "TP-Link TL-POE160S", "notes": "PoE+ injector", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] },
+        { "model": "TP-Link 5-port unmanaged (non-PoE)", "sources": ["src_networking_brief_docx"] },
+        { "model": "usw flex mini", "notes": "5-port unmanaged (as described)", "sources": ["src_network_infrastructure_md"] }
+      ],
+      "wired_endpoints_listed": [
+        { "device": "Aqara M3 Hub", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx", "src_smart_home_inventory_md"] },
+        { "device": "GMKtec Mini PC (main server)", "sources": ["src_network_infrastructure_md", "src_system_state_snapshot_md"] },
+        { "device": "Apple TV (Open Plan)", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx", "src_smart_home_inventory_md"] },
+        { "device": "Philips Hue Bridge Pro", "sources": ["src_network_infrastructure_md", "src_networking_brief_docx", "src_smart_home_inventory_md"] },
+        { "device": "Unifi 6+ AP", "sources": ["src_network_infrastructure_md"] },
+        { "device": "MacBook Pro 2019 (always-on) listed as wired", "sources": ["src_networking_brief_docx"] }
+      ],
+      "segmentation_state": {
+        "all_devices_same_network": [
+          { "value": true, "sources": ["src_network_infrastructure_md", "src_networking_brief_docx"] }
+        ]
+      },
+      "retired_or_spare_network_hardware": [
+        { "device": "Eero Pro 6E Gateway", "status": "retired", "location": "storage", "sources": ["src_network_infrastructure_md"] },
+        { "device": "Eero 6+ Nodes", "count": 2, "status": "no longer in production", "location": "storage", "sources": ["src_network_infrastructure_md"] },
+        { "device": "Eero 6 Pro", "count": 1, "status": "no longer in production", "location": "storage", "sources": ["src_network_infrastructure_md"] },
+        { "device": "Eero 6+ additional units", "count": 3, "status": "spare hardware", "sources": ["src_networking_brief_docx"] },
+        { "device": "Eero 6 Pro (TalkTalk branding)", "count": 1, "status": "spare hardware", "sources": ["src_networking_brief_docx"] },
+        { "device": "Eero 6+ in storage", "count": 2, "status": "in storage", "sources": ["src_device_entity_inventory_pdf"] },
+        { "device": "Eero 6 Pro in storage", "count": 1, "status": "in storage", "sources": ["src_device_entity_inventory_pdf"] }
+      ],
+      "explicit_wiring_path_eero_based": {
+        "path_segments_in_order": [
+          { "from": "ONT (Hyperoptic wall port)", "to": "Eero Pro 6E (WAN port 2.5Gbps)", "sources": ["src_networking_brief_docx"] },
+          { "from": "Eero Pro 6E (LAN port 1Gbps)", "to": "TP-Link LS105GP", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS105GP", "to": "TP-Link LS108GP", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS108GP", "to": "PoE splitter to Home Assistant Green", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS108GP", "to": "Aqara M3 Hub", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS105GP", "to": "MacBook Pro 2019 (always-on)", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS105GP", "to": "Apple TV", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link LS105GP", "to": "Patch Port (South wall)", "sources": ["src_networking_brief_docx"] },
+          { "from": "Patch Port (South wall)", "to": "Patch Port (North wall)", "sources": ["src_networking_brief_docx"] },
+          { "from": "Patch Port (North wall)", "to": "TP-Link 5-port unmanaged switch", "sources": ["src_networking_brief_docx"] },
+          { "from": "TP-Link 5-port switch", "to": "Hue Bridge Pro", "sources": ["src_networking_brief_docx"] }
+        ]
+      }
+    },
+    "flat_layout_facts": {
+      "type": [
+        { "value": "Two-bedroom flat", "sources": ["src_networking_brief_docx"] }
+      ],
+      "approx_area_sq_ft": [
+        { "value": 900, "sources": ["src_networking_brief_docx"] }
+      ],
+      "rooms_listed": [
+        { "value": ["2 bedrooms", "2 bathrooms", "walk-in wardrobe", "multiple storage rooms"], "sources": ["src_networking_brief_docx"] }
+      ],
+      "hallway_structure_terms_listed": [
+        { "value": ["Front Stretch", "Rear Stretch", "Entry Zone/Landing Pad"], "sources": ["src_networking_brief_docx"] }
+      ]
+    },
+    "cross_source_differences_non_reconciled": [
+      {
+        "topic": "network_primary_gateway",
+        "claims": [
+          { "value": "Unifi Cloud Gateway Ultra + 6+ AP (production)", "sources": ["src_network_infrastructure_md"] },
+          { "value": "Eero Pro 6E as router/main gateway", "sources": ["src_networking_brief_docx", "src_device_entity_inventory_pdf"] }
+        ]
+      },
+      {
+        "topic": "hue_dimmer_switch_count",
+        "claims": [
+          { "value": 4, "sources": ["src_smart_home_inventory_md"] },
+          { "value": 2, "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      {
+        "topic": "switchbot_switch_tongue_count",
+        "claims": [
+          { "value": 1, "sources": ["src_smart_home_inventory_md"] },
+          { "value": 2, "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      {
+        "topic": "switchbot_hub_3_status_note",
+        "claims": [
+          { "value": "production", "sources": ["src_smart_home_inventory_md"] },
+          { "value": "listed with note debating returning", "sources": ["src_device_entity_inventory_pdf"] }
+        ]
+      },
+      {
+        "topic": "where_docker_is_described_as_running",
+        "claims": [
+          { "value": "Docker (Home Assistant container) running on GMKtec Mini PC", "sources": ["src_system_state_snapshot_md"] },
+          { "value": "Docker desktop self-hosted on Macbook Pro 2019 Touchbar", "sources": ["src_networking_brief_docx"] }
+        ]
+      }
+    ]
+  }
+}
