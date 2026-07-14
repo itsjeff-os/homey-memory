@@ -1,0 +1,217 @@
+{
+  "name": "ChatGPT to Home Assistant Automation Writer with Feedback Loop",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "94ce8ee7-5f22-4120-bda0-c19ed6fe5a62",
+      "name": "Send Response to ChatGPT",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -3872,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "wrote",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "id-2",
+              "name": "automation_id",
+              "value": "={{ $('ChatGPT Custom Action Webhook').item.json.body.automation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "ha_response",
+              "value": "={{ $('Write Automation via SSH').item.json }}",
+              "type": "object"
+            },
+            {
+              "id": "85f4c10e-564d-4c99-8c6d-adc29c796f63",
+              "name": "reloaded",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "5c5073ca-a308-497b-9da6-b8b9b31eeb1f",
+              "name": "reloaded_response",
+              "value": "={{ $('Reload HA Automations').item.json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fa665880-1282-487b-b312-2059791efcbd",
+      "name": "Format Response for ChatGPT",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4096,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "automation",
+        "service": "reload"
+      },
+      "id": "5fd029ea-9142-4d46-98ac-460cb0f16e52",
+      "name": "Reload HA Automations",
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        -4320,
+        400
+      ],
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "7qaIGmmKngYnKYIG",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ship-automation",
+        "responseMode": "responseNode",
+        "options": {
+          "binaryPropertyName": ""
+        }
+      },
+      "id": "89332d63-5178-42a3-9024-6f8c2b3645b4",
+      "name": "ChatGPT Custom Action Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -4992,
+        400
+      ],
+      "webhookId": "4c5e9294-065e-4ce4-8da7-e949fbef8f08",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const yaml = require('js-yaml');\nconst automation = $json.body.automation;\nconst automationId = $json.body.automation_id;\n\n// Convert to YAML\nconst yamlContent = yaml.dump(automation);\n\nreturn {\n  json: {\n    automation_id: automationId,\n    yaml_content: yamlContent,\n    file_path: `/config/automations/${automationId}.yaml`\n  }\n};"
+      },
+      "id": "d2e431da-cd2d-4638-a021-167078175e41",
+      "name": "Convert to YAML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4768,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=cat > {{ $json.file_path }} << 'EOF'\n{{ $json.yaml_content }}\nEOF"
+      },
+      "id": "637c53fb-9231-4447-9d10-a7c08bd3a817",
+      "name": "Write Automation via SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -4544,
+        400
+      ],
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "pBh4IQI24Z9EtLEb",
+          "name": "SSH Private Key account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Format Response for ChatGPT": {
+      "main": [
+        [
+          {
+            "node": "Send Response to ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reload HA Automations": {
+      "main": [
+        [
+          {
+            "node": "Format Response for ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatGPT Custom Action Webhook": {
+      "main": [
+        [
+          {
+            "node": "Convert to YAML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to YAML": {
+      "main": [
+        [
+          {
+            "node": "Write Automation via SSH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Automation via SSH": {
+      "main": [
+        [
+          {
+            "node": "Reload HA Automations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "any",
+    "availableInMCP": false,
+    "saveExecutionProgress": true,
+    "errorWorkflow": "AXLtKKUH7yLoz5tb"
+  },
+  "versionId": "08e88fd7-5acd-4fe1-9394-952ed267e1f8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a653162c6f9969241a7c5c562c3c15fea7fb87f91190380e26062f1bfcab837a"
+  },
+  "id": "51CHQXWOEecaDRer",
+  "tags": []
+}

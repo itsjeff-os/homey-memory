@@ -1,0 +1,25 @@
+﻿Entity ID,Area,Device,Firmware,Last seen,Notes,Type,Vendor
+binary_sensor.presence_sensor_fp2_ed3b_presence_sensor_1,,,,,Zone 1,Sensor,Aqara FP2
+binary_sensor.bedroom1_door,,,,,From HA export,Binary Sensor,
+sensor.bathroom2_temperature_sensor,,,,,From HA export,Sensor,
+binary_sensor.presence_sensor_fp2_ed3b_presence_sensor_2,,,,,Zone 2,Sensor,Aqara FP2
+sensor.bedroom_battery,,,,,From HA export,Sensor,
+binary_sensor.bathroom2_motion_sensor,,,,,From HA export,Sensor,
+binary_sensor.bath1_door,,,,,From HA export,Binary Sensor,
+event.hue_tap_dial_switch_1_rotary,,,,,Rotary,Switch/Remote,Hue Tap Dial
+event.hue_tap_dial_switch_1_button_4,,,,,Button 4,Switch/Remote,Hue Tap Dial
+event.hue_tap_dial_switch_1_button_3,,,,,Button 3,Switch/Remote,Hue Tap Dial
+,,,,,,,
+,,,,,,,
+light.bathroom2_ceiling_3,,Bathroom2 Ceiling 3 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%203%201cc2e32406824601bd998deb0dd37454.md),,,,Light,
+light.bathroom2_ceiling_2,,Bathroom2 Ceiling 2 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%202%2034610bcac5164ec79cbc72cbb3911717.md),,,,Light,
+light.bedroom1_ceiling_1,,Bedroom1 Ceiling 1 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom1%20Ceiling%201%2034fcc212dc5444f293a03bcb543a64a9.md),,,,Light,
+light.bedroom1_ceiling_2,,Bedroom1 Ceiling 2 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom1%20Ceiling%202%204db6546969774fed8be771f89d1c3730.md),,,,Light,
+light.bathroom2_ceiling_4,,Bathroom2 Ceiling 4 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%204%205f813ff0959648aeba1e74bf22ee2e1a.md),,,,Light,
+light.bedroom1_ceiling_3,,Bedroom1 Ceiling 3 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom1%20Ceiling%203%20bbc25f5ef2a2434aa6e65cb1869c9771.md),,,,Light,
+light.bathroom2_ceiling_1,,Bathroom2 Ceiling 1 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%201%20c047a2a4caf14efe9c59b2d9bd62aec9.md),,,,Light,
+light.bathroom_rear,,Bathroom2 Ceiling All (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%20All%20e052d18d8e614182abd1acca46996893.md),,,,Light,
+light.bathroom2_ceiling_5,,Bathroom2 Ceiling 5 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bathroom2%20Ceiling%205%20e741420b656b4e3aa46f8cc152888f6c.md),,,,Light,
+light.bedroom1_ceiling_4,,Bedroom1 Ceiling 4 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom1%20Ceiling%204%20fb26e11216d94b2987aae1df151b217f.md),,,,Light,
+light.bedroom1_ceiling_6,,Bedroom Ceiling 6 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom%20Ceiling%206%20fef971aa8aa14470b9e837aacb7535dd.md),,,,Light,
+light.bedroom1_ceiling_5,,Bedroom Ceiling 5 (Smart%20Home%20Systems%20Hub/Untitled%209a8ad82b/Bedroom%20Ceiling%205%20f68fb2027ade4be0a3fd8ced92e2752d.md),,,,Light,
