@@ -1,0 +1,12 @@
+shell_command:
+  write_automation: bash /config/scripts/write_yaml.sh "{{ file_name }}" "{{ automation_yaml }}"
+
+gpt_apply_automation:
+  alias: GPT Apply Automation
+  mode: single
+  sequence:
+    - data:
+        automation_yaml: "{{ automation_yaml }}"
+        file_name: "{{ file_name }}"
+      action: shell_command.write_automation
+    - action: automation.reload
