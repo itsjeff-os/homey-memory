@@ -104,3 +104,18 @@ cd homey-memory
 ```
 
 Each section is independently usable. See the section README for setup instructions specific to that area.
+
+## Tooling & CI/CD
+
+Code (as opposed to content/data) lives in a [pnpm](https://pnpm.io) workspace
+managed with [Turborepo](https://turbo.build) for parallel, cached
+lint/typecheck/test runs. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the
+module boundaries and local workflow.
+
+```bash
+pnpm install
+pnpm turbo run lint typecheck test
+```
+
+GitHub Actions (`.github/workflows/`) runs CI, CodeQL, dependency review, and
+a repo-structure convention check on every push/PR.

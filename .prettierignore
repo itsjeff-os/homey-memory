@@ -9,8 +9,18 @@ workflows/ifttt/**
 chunking/homeassistant-chunking/chunking-material/**
 chunking/homeassistant-chunking/sources/**
 chunking/homeassistant-chunking/experimental/**
+chunking/homeassistant-chunking/src_2/**
+chunking/homeassistant-chunking/tests/**
 chunking/homeassistant-chunking/ha_corpus.md
 chunking/homeassistant-chunking/ha_corpus_manifest.md
+chunking/homeassistant-chunking/chunkHomeAssistantYaml.ts
+chunking/homeassistant-chunking/testHaChunking.ts
 pnpm-lock.yaml
 package-lock.json
 *.min.js
+
+# Markdown is prose, not managed by Prettier here.
+**/*.md
+
+# Build/tool caches
+.turbo/

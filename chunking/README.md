@@ -6,6 +6,7 @@ Text chunking strategies for RAG (Retrieval-Augmented Generation) pipelines.
 
 | Directory | Description |
 |-----------|-------------|
+| [`homeassistant-chunking/`](./homeassistant-chunking/) | `@homey-memory/homeassistant-chunking` — pnpm workspace package with chunking scripts/utilities for the Home Assistant corpus (`pnpm --filter @homey-memory/homeassistant-chunking <script>`) |
 | [`strategies/`](./strategies/) | Named strategy implementations and configuration files |
 
 ## Overview
