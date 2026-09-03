@@ -1,11 +1,16 @@
 {
+  "name": "@homey-memory/homeassistant-chunking",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chunking utilities and scripts for turning Home Assistant YAML/config corpus into retrieval-ready chunks.",
   "scripts": {
     "chunk:dry": "tsx src/scripts/chunkHomeAssistantCorpus.ts --dry-run",
     "chunk:test": "tsx src/scripts/runChunkTests.ts",
     "chunk:manifest": "tsx src/scripts/chunkHomeAssistantCorpus.ts --write",
     "chunk:validate": "tsx src/scripts/chunkHomeAssistantCorpus.ts --validate",
     "chunk:compare-original": "tsx src/scripts/compareOriginalChunker.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --max-warnings=0"
   },
   "dependencies": {
     "@types/node": "^25.6.0",

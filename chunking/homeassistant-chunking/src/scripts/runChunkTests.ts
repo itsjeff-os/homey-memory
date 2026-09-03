@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml";
-import { chunkHomeRegistry } from "../pkg/chunkHomeRegistry";
-import { chunkMarkdownDocs } from "../pkg/chunkMarkdownDocs";
-import { stableHash } from "../pkg/knowledgeChunk";
+import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml.js";
+import { chunkHomeRegistry } from "../pkg/chunkHomeRegistry.js";
+import { chunkMarkdownDocs } from "../pkg/chunkMarkdownDocs.js";
+import { stableHash } from "../pkg/knowledgeChunk.js";
 
 const root = process.cwd();
 
@@ -22,11 +22,7 @@ function yamlChunks(relativePath: string) {
 
 function assertNoFatalParseErrors(relativePath: string) {
   const result = yamlChunks(relativePath);
-  assert.equal(
-    result.errors.length,
-    0,
-    `${relativePath} should parse without fatal errors`,
-  );
+  assert.equal(result.errors.length, 0, `${relativePath} should parse without fatal errors`);
   assert.ok(result.chunks.length > 0, `${relativePath} should produce chunks`);
   return result;
 }
@@ -48,9 +44,7 @@ const automationResult = assertNoFatalParseErrors(
 );
 assert.equal(automationResult.redactionWarnings.length, 0);
 assert.ok(
-  automationResult.chunks.every(
-    (chunk) => chunk.collection === "home_ha_automations",
-  ),
+  automationResult.chunks.every((chunk) => chunk.collection === "home_ha_automations"),
   "lighting automations should route to home_ha_automations",
 );
 assert.ok(
@@ -60,25 +54,19 @@ assert.ok(
   "automation chunks should extract entity references",
 );
 
-const helpersResult = assertNoFatalParseErrors(
-  "ha_cleaned_yaml/packages/lighting_helpers.yaml",
-);
+const helpersResult = assertNoFatalParseErrors("ha_cleaned_yaml/packages/lighting_helpers.yaml");
 assert.ok(
   helpersResult.chunks.every((chunk) => chunk.collection === "home_ha_reference"),
   "helpers should route to home_ha_reference",
 );
 
-const groupsResult = assertNoFatalParseErrors(
-  "ha_cleaned_yaml/packages/light_groups.yaml",
-);
+const groupsResult = assertNoFatalParseErrors("ha_cleaned_yaml/packages/light_groups.yaml");
 assert.ok(
   groupsResult.chunks.every((chunk) => chunk.collection === "home_ha_reference"),
   "light groups should route to home_ha_reference",
 );
 assert.ok(
-  groupsResult.chunks.some((chunk) =>
-    chunk.entities.includes("light.ceiling_hallway_front"),
-  ),
+  groupsResult.chunks.some((chunk) => chunk.entities.includes("light.ceiling_hallway_front")),
   "light group chunks should extract grouped entities",
 );
 
@@ -87,26 +75,17 @@ const scriptChunk = assertCollection(
   "home_ha_automations",
   (id) => id.includes("write_automation_and_reload"),
 );
-assert.deepEqual(
-  scriptChunk.services,
-  ["automation.reload", "shell_command.write_automation"],
-);
+assert.deepEqual(scriptChunk.services, ["automation.reload", "shell_command.write_automation"]);
 
-const blueprintResult = assertNoFatalParseErrors(
-  "ceiling_daily_rhythm_presence.yaml",
-);
+const blueprintResult = assertNoFatalParseErrors("ceiling_daily_rhythm_presence.yaml");
 assert.equal(
-  blueprintResult.warnings.filter((warning) =>
-    warning.message.includes("Unresolved tag"),
-  ).length,
+  blueprintResult.warnings.filter((warning) => warning.message.includes("Unresolved tag")).length,
   0,
   "!input tags should parse without unresolved tag warnings",
 );
 assert.ok(
   blueprintResult.chunks.some(
-    (chunk) =>
-      chunk.collection === "home_ha_automations" &&
-      chunk.tags.includes("blueprint_input"),
+    (chunk) => chunk.collection === "home_ha_automations" && chunk.tags.includes("blueprint_input"),
   ),
   "blueprints should emit input chunks routed to home_ha_automations",
 );
@@ -115,23 +94,19 @@ assert.ok(
   "blueprint chunks should extract service calls",
 );
 assert.ok(
-  blueprintResult.chunks.some((chunk) =>
-    chunk.tags.includes("blueprint_behavior"),
-  ),
+  blueprintResult.chunks.some((chunk) => chunk.tags.includes("blueprint_behavior")),
   "blueprints should emit a separate behavior chunk",
 );
 assert.ok(
   blueprintResult.chunks.every(
     (chunk) =>
-      !chunk.entities.includes("light.turn_on") &&
-      !chunk.entities.includes("light.turn_off"),
+      !chunk.entities.includes("light.turn_on") && !chunk.entities.includes("light.turn_off"),
   ),
   "service calls should not be misclassified as entities",
 );
 assert.ok(
-  (blueprintResult.chunks.find((chunk) =>
-    chunk.tags.includes("blueprint_overview"),
-  )?.text.length ?? Infinity) < 3_000,
+  (blueprintResult.chunks.find((chunk) => chunk.tags.includes("blueprint_overview"))?.text.length ??
+    Infinity) < 3_000,
   "blueprint overview should stay compact and not contain the whole automation body",
 );
 
@@ -181,11 +156,7 @@ assert.ok(
   "registry chunks should expose HA entities",
 );
 
-const roomsDocResult = chunkMarkdownDocs(
-  read("Rooms/Rooms.md"),
-  "Rooms.md",
-  "Rooms/Rooms.md",
-);
+const roomsDocResult = chunkMarkdownDocs(read("Rooms/Rooms.md"), "Rooms.md", "Rooms/Rooms.md");
 assert.equal(roomsDocResult.errors.length, 0);
 assert.ok(
   roomsDocResult.chunks.every((chunk) => chunk.text.length >= 120),
@@ -199,9 +170,7 @@ const jsonTextDocResult = chunkMarkdownDocs(
 );
 assert.equal(jsonTextDocResult.errors.length, 0);
 assert.ok(
-  jsonTextDocResult.chunks.some(
-    (chunk) => chunk.provenance.sourceType === "home_system_json_doc",
-  ),
+  jsonTextDocResult.chunks.some((chunk) => chunk.provenance.sourceType === "home_system_json_doc"),
   "JSON-shaped text docs should be chunked structurally",
 );
 
@@ -211,26 +180,23 @@ const historicalDocResult = chunkMarkdownDocs(
   "ha_historical_context/execution_plan_adaptive_home_v_0.md",
 );
 assert.ok(
-  historicalDocResult.chunks.some((chunk) =>
-    chunk.services.includes("light.turn_on"),
-  ),
+  historicalDocResult.chunks.some((chunk) => chunk.services.includes("light.turn_on")),
   "docs with YAML examples should expose service calls",
 );
 assert.ok(
   historicalDocResult.chunks.every(
     (chunk) =>
-      !chunk.entities.includes("light.turn_on") &&
-      !chunk.entities.includes("light.turn_off"),
+      !chunk.entities.includes("light.turn_on") && !chunk.entities.includes("light.turn_off"),
   ),
   "docs should not misclassify service calls as entities",
 );
 
-const firstIdRun = yamlChunks(
-  "ha_cleaned_yaml/packages/lighting_automations.yaml",
-).chunks.map((chunk) => chunk.id);
-const secondIdRun = yamlChunks(
-  "ha_cleaned_yaml/packages/lighting_automations.yaml",
-).chunks.map((chunk) => chunk.id);
+const firstIdRun = yamlChunks("ha_cleaned_yaml/packages/lighting_automations.yaml").chunks.map(
+  (chunk) => chunk.id,
+);
+const secondIdRun = yamlChunks("ha_cleaned_yaml/packages/lighting_automations.yaml").chunks.map(
+  (chunk) => chunk.id,
+);
 assert.deepEqual(firstIdRun, secondIdRun, "chunk IDs should be stable");
 
 const firstContentHashes = yamlChunks(

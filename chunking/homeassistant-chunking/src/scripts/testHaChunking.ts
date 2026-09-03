@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { chunkHomeAssistantYaml } from "../pkg/chunkHomeAssistantYaml";
+import { chunkHomeAssistantYaml } from "../pkg/chunkHomeAssistantYaml.js";
 
 const inputPath = path.resolve(process.argv[2] || "./sleep_routine.yaml");
 const outputPath = path.resolve("./ha_chunks.json");

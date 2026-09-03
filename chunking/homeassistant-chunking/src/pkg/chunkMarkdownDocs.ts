@@ -5,7 +5,7 @@ import {
   createKnowledgeChunk,
   redactText,
   stableJson,
-} from "./knowledgeChunk";
+} from "./knowledgeChunk.js";
 
 const MAX_DOC_CHARS = 4_000;
 const MIN_DOC_CHARS = 220;
@@ -64,10 +64,7 @@ function splitDocument(content: string, sourceFile: string): DocSection[] {
   return splitByHeadings(content, sourceFile);
 }
 
-function parseJsonLikeDoc(
-  content: string,
-  sourceFile: string,
-): DocSection[] | undefined {
+function parseJsonLikeDoc(content: string, sourceFile: string): DocSection[] | undefined {
   const trimmed = redactText(content).trim();
   const extension = path.extname(sourceFile).toLowerCase();
   if (![".json", ".txt"].includes(extension)) return undefined;
@@ -109,9 +106,7 @@ function parseJsonLikeDoc(
 
   for (const [key, value] of Object.entries(root)) {
     if (key === "facts" && value && typeof value === "object" && !Array.isArray(value)) {
-      for (const [factKey, factValue] of Object.entries(
-        value as Record<string, unknown>,
-      )) {
+      for (const [factKey, factValue] of Object.entries(value as Record<string, unknown>)) {
         add(`facts.${factKey}`, factValue);
       }
       continue;
@@ -232,8 +227,7 @@ export function chunkMarkdownDocs(
       },
       tags: ["doc", ext],
       provenance: {
-        sourceType:
-          section.format === "json" ? "home_system_json_doc" : "home_system_doc",
+        sourceType: section.format === "json" ? "home_system_json_doc" : "home_system_doc",
         parser: "chunkMarkdownDocs",
         objectType: "doc_section",
         objectName: section.heading,

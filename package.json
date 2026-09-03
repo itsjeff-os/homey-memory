@@ -1,0 +1,26 @@
+{
+  "name": "homey-memory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Modular mono-repo corpus and scaffold for projects, memory systems, workflows, and architectural references.",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate-structure": "node scripts/validate-structure.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.12",
+    "typescript-eslint": "^8.69.0"
+  }
+}

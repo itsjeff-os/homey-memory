@@ -11,7 +11,7 @@ import {
   extractServices,
   findUnredactedSecretWarnings,
   slugify,
-} from "./knowledgeChunk";
+} from "./knowledgeChunk.js";
 
 export type HaObjectType =
   | "automation"
@@ -90,10 +90,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function firstString(
-  value: unknown,
-  keys: string[],
-): string | undefined {
+function firstString(value: unknown, keys: string[]): string | undefined {
   if (!isRecord(value)) return undefined;
 
   for (const key of keys) {
@@ -147,9 +144,7 @@ function looksLikeScriptMap(root: Record<string, unknown>, sourcePath: string): 
   return (
     values.length > 0 &&
     values.every(
-      (value) =>
-        isRecord(value) &&
-        ("sequence" in value || "fields" in value || "alias" in value),
+      (value) => isRecord(value) && ("sequence" in value || "fields" in value || "alias" in value),
     )
   );
 }
@@ -175,12 +170,8 @@ function makeText(params: {
     `Home Assistant ${params.objectType}: ${label}`,
     `Source: ${params.sourcePath}`,
     `Section path: ${params.sectionPath}`,
-    params.entities?.length
-      ? `Entities: ${params.entities.join(", ")}`
-      : undefined,
-    params.services?.length
-      ? `Services: ${params.services.join(", ")}`
-      : undefined,
+    params.entities?.length ? `Entities: ${params.entities.join(", ")}` : undefined,
+    params.services?.length ? `Services: ${params.services.join(", ")}` : undefined,
     params.rooms?.length ? `Rooms: ${params.rooms.join(", ")}` : undefined,
     "",
     toYaml(params.raw),
@@ -234,13 +225,7 @@ function makeHaChunk(params: {
     services,
     rooms,
     domains: [params.section],
-    tags: [
-      "home_assistant",
-      "yaml",
-      params.section,
-      params.objectType,
-      ...(params.tags ?? []),
-    ],
+    tags: ["home_assistant", "yaml", params.section, params.objectType, ...(params.tags ?? [])],
     provenance: {
       sourceType: "home_assistant_yaml",
       parser: "chunkHomeAssistantYaml",
@@ -255,16 +240,8 @@ function makeHaChunk(params: {
   });
 }
 
-function namedObjectName(
-  item: unknown,
-  fallback: string,
-  key?: string,
-): string {
-  return (
-    firstString(item, ["id", "unique_id", "name", "alias"]) ??
-    key ??
-    fallback
-  );
+function namedObjectName(item: unknown, fallback: string, key?: string): string {
+  return firstString(item, ["id", "unique_id", "name", "alias"]) ?? key ?? fallback;
 }
 
 function chunkAutomationLikeSection(params: {
@@ -353,10 +330,7 @@ function chunkTemplateSection(params: {
 
       for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
         const item = value[itemIndex];
-        const objectName = namedObjectName(
-          item,
-          `${templateType}_${templateIndex}_${itemIndex}`,
-        );
+        const objectName = namedObjectName(item, `${templateType}_${templateIndex}_${itemIndex}`);
         const alias = firstString(item, ["name", "alias"]);
         const objectType =
           templateType === "binary_sensor"
@@ -376,9 +350,7 @@ function chunkTemplateSection(params: {
             objectName,
             alias,
             raw: { template: [{ [templateType]: [item] }] },
-            sectionPath: `${params.sectionPath}.${templateType}.${slugify(
-              objectName,
-            )}`,
+            sectionPath: `${params.sectionPath}.${templateType}.${slugify(objectName)}`,
             tags: [templateType],
           }),
         );
@@ -487,8 +459,7 @@ function chunkBlueprint(params: {
 }): KnowledgeChunk[] {
   const chunks: KnowledgeChunk[] = [];
   const blueprint = isRecord(params.root.blueprint) ? params.root.blueprint : {};
-  const blueprintName =
-    firstString(blueprint, ["name"]) ?? sourcePackageName(params.sourcePath);
+  const blueprintName = firstString(blueprint, ["name"]) ?? sourcePackageName(params.sourcePath);
   const input = isRecord(blueprint.input) ? blueprint.input : {};
   const blueprintOverview = {
     blueprint: {
@@ -753,9 +724,5 @@ export function chunkHomeAssistantYaml(
   sourceFile: string,
   sourcePath = sourceFile,
 ): KnowledgeChunk[] {
-  return chunkHomeAssistantYamlWithDiagnostics(
-    fileContent,
-    sourceFile,
-    sourcePath,
-  ).chunks;
+  return chunkHomeAssistantYamlWithDiagnostics(fileContent, sourceFile, sourcePath).chunks;
 }

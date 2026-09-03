@@ -2,10 +2,7 @@ import crypto from "node:crypto";
 import path from "node:path";
 
 export type KnowledgeCollection =
-  | "home_ha_automations"
-  | "home_ha_reference"
-  | "home_registry"
-  | "home_system_docs";
+  "home_ha_automations" | "home_ha_reference" | "home_registry" | "home_system_docs";
 
 export interface KnowledgeChunk {
   id: string;
@@ -78,10 +75,7 @@ const ENTITY_DOMAINS = [
   "zone",
 ];
 
-const ENTITY_RE = new RegExp(
-  `\\b(?:${ENTITY_DOMAINS.join("|")})\\.[a-zA-Z0-9_]+\\b`,
-  "g",
-);
+const ENTITY_RE = new RegExp(`\\b(?:${ENTITY_DOMAINS.join("|")})\\.[a-zA-Z0-9_]+\\b`, "g");
 
 const SERVICE_RE = /\b[a-z_][a-z0-9_]*\.[a-zA-Z0-9_]+\b/g;
 
@@ -134,12 +128,7 @@ const ROOM_PATTERNS: Array<{ id: string; patterns: RegExp[] }> = [
   },
   {
     id: "room.bedroom2",
-    patterns: [
-      /bedroom[ _-]?2/i,
-      /\bbeta\b/i,
-      /secondary bedroom/i,
-      /\bwardrobe\b/i,
-    ],
+    patterns: [/bedroom[ _-]?2/i, /\bbeta\b/i, /secondary bedroom/i, /\bwardrobe\b/i],
   },
   {
     id: "room.bathroom_throne",
@@ -194,11 +183,7 @@ export function stableChunkId(
   const base = [collection, sourcePath, logicalPath].map(slugify).join(":");
   if (base.length <= 180) return base;
 
-  return [
-    collection,
-    path.basename(sourcePath),
-    shortHash(`${sourcePath}:${logicalPath}`, 16),
-  ]
+  return [collection, path.basename(sourcePath), shortHash(`${sourcePath}:${logicalPath}`, 16)]
     .map(slugify)
     .join(":");
 }
@@ -304,9 +289,7 @@ export function extractEntityIds(value: unknown): string[] {
 
     if (!node || typeof node !== "object") return;
 
-    for (const [childKey, childValue] of Object.entries(
-      node as Record<string, unknown>,
-    )) {
+    for (const [childKey, childValue] of Object.entries(node as Record<string, unknown>)) {
       visit(childValue, [...keyPath, childKey]);
     }
   };
@@ -345,9 +328,7 @@ export function extractServices(value: unknown): string[] {
 
     if (!node || typeof node !== "object") return;
 
-    for (const [childKey, childValue] of Object.entries(
-      node as Record<string, unknown>,
-    )) {
+    for (const [childKey, childValue] of Object.entries(node as Record<string, unknown>)) {
       visit(childValue, [...keyPath, childKey]);
     }
   };
@@ -386,8 +367,7 @@ export function extractDomainsFromEntitiesAndServices(params: {
 }
 
 export function extractRooms(value: unknown): string[] {
-  const haystack =
-    typeof value === "string" ? value : stableJson(redactValue(value));
+  const haystack = typeof value === "string" ? value : stableJson(redactValue(value));
   const rooms = new Set<string>();
 
   for (const room of ROOM_PATTERNS) {
@@ -414,10 +394,7 @@ function collectExplicitRoomIds(value: unknown, rooms: Set<string>): void {
   if (!value || typeof value !== "object") return;
 
   for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
-    if (
-      (key === "room_id" || key === "location_room_id") &&
-      typeof item === "string"
-    ) {
+    if ((key === "room_id" || key === "location_room_id") && typeof item === "string") {
       rooms.add(item);
       continue;
     }
@@ -449,25 +426,15 @@ export function createKnowledgeChunk(params: {
 }): KnowledgeChunk {
   const raw = redactValue(params.raw);
   const redactedText = redactText(params.text);
-  const entities = sortUnique([
-    ...(params.entities ?? []),
-    ...extractEntityIds(raw),
-  ]);
-  const services = sortUnique([
-    ...(params.services ?? []),
-    ...extractServices(raw),
-  ]);
+  const entities = sortUnique([...(params.entities ?? []), ...extractEntityIds(raw)]);
+  const services = sortUnique([...(params.services ?? []), ...extractServices(raw)]);
   const rooms = sortUnique([...(params.rooms ?? []), ...extractRooms(raw)]);
   const domains = extractDomainsFromEntitiesAndServices({
     entities,
     services,
     extra: params.domains,
   });
-  const id = stableChunkId(
-    params.collection,
-    params.sourcePath,
-    params.logicalPath,
-  );
+  const id = stableChunkId(params.collection, params.sourcePath, params.logicalPath);
 
   return {
     id,

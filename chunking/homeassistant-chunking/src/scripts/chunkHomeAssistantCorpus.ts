@@ -1,14 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
-import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml";
-import { chunkHomeRegistry } from "../pkg/chunkHomeRegistry";
-import { chunkMarkdownDocs } from "../pkg/chunkMarkdownDocs";
+import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml.js";
+import { chunkHomeRegistry } from "../pkg/chunkHomeRegistry.js";
+import { chunkMarkdownDocs } from "../pkg/chunkMarkdownDocs.js";
 import {
   type ChunkIssue,
   type ChunkResult,
   type KnowledgeChunk,
   findUnredactedSecretWarnings,
-} from "../pkg/knowledgeChunk";
+} from "../pkg/knowledgeChunk.js";
 
 type CorpusMode = "dry-run" | "manifest" | "validate";
 
@@ -76,13 +76,7 @@ const OUTPUT_DIR = path.join("generated", "chunks");
 const CHUNKS_OUTPUT = path.join(OUTPUT_DIR, "homeassistant_chunks.json");
 const MANIFEST_OUTPUT = path.join(OUTPUT_DIR, "homeassistant_manifest.json");
 
-const IGNORED_DIRS = new Set([
-  ".git",
-  "generated",
-  "logs",
-  "node_modules",
-  "path",
-]);
+const IGNORED_DIRS = new Set([".git", "generated", "logs", "node_modules", "path"]);
 
 const IGNORED_EXTENSIONS = new Set([
   ".ds_store",
@@ -151,10 +145,7 @@ function classifyFile(relativePath: string): IncludedFile | SkippedFile {
     return { path: relativePath, kind: "registry" };
   }
 
-  if (
-    relativePath.startsWith("ha_cleaned_yaml/") &&
-    relativePath.endsWith(".yaml")
-  ) {
+  if (relativePath.startsWith("ha_cleaned_yaml/") && relativePath.endsWith(".yaml")) {
     return { path: relativePath, kind: "yaml" };
   }
 
@@ -162,10 +153,7 @@ function classifyFile(relativePath: string): IncludedFile | SkippedFile {
     return { path: relativePath, kind: "yaml" };
   }
 
-  if (
-    relativePath.startsWith("ha_historical_context/") &&
-    relativePath.endsWith(".yaml")
-  ) {
+  if (relativePath.startsWith("ha_historical_context/") && relativePath.endsWith(".yaml")) {
     return { path: relativePath, kind: "yaml" };
   }
 
@@ -220,10 +208,7 @@ function countCollections(chunks: KnowledgeChunk[]): Record<string, number> {
   return Object.fromEntries(Object.entries(counts).sort());
 }
 
-function countByProvenanceKey(
-  chunks: KnowledgeChunk[],
-  key: string,
-): Record<string, number> {
+function countByProvenanceKey(chunks: KnowledgeChunk[], key: string): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const chunk of chunks) {
     const value = chunk.provenance[key];
@@ -235,10 +220,7 @@ function countByProvenanceKey(
 
 function percentile(values: number[], percentileValue: number): number {
   if (!values.length) return 0;
-  const index = Math.min(
-    values.length - 1,
-    Math.floor((values.length - 1) * percentileValue),
-  );
+  const index = Math.min(values.length - 1, Math.floor((values.length - 1) * percentileValue));
   return values[index] ?? 0;
 }
 
@@ -262,8 +244,7 @@ function consistencyReport(chunks: KnowledgeChunk[]): CorpusManifest["consistenc
   ];
 
   for (const field of requiredFields) {
-    missingFieldCounts[field] = chunks.filter((chunk) => chunk[field] == null)
-      .length;
+    missingFieldCounts[field] = chunks.filter((chunk) => chunk[field] == null).length;
   }
 
   return {
@@ -284,9 +265,7 @@ function consistencyReport(chunks: KnowledgeChunk[]): CorpusManifest["consistenc
   };
 }
 
-function findDuplicateIds(
-  chunks: KnowledgeChunk[],
-): Array<{ id: string; sourcePaths: string[] }> {
+function findDuplicateIds(chunks: KnowledgeChunk[]): Array<{ id: string; sourcePaths: string[] }> {
   const byId = new Map<string, Set<string>>();
   for (const chunk of chunks) {
     const sourcePaths = byId.get(chunk.id) ?? new Set<string>();

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
-import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml";
+import { chunkHomeAssistantYamlWithDiagnostics } from "../pkg/chunkHomeAssistantYaml.js";
 
 const INPUT_PATH = "ceiling_daily_rhythm_presence.yaml";
 const OLD_CHUNKS_PATH = "ha_chunks.json";
@@ -26,9 +26,7 @@ interface OriginalChunk {
 }
 
 function loadOriginalChunker() {
-  const tempDir = fs.mkdtempSync(
-    path.join(process.cwd(), ".tmp-original-chunker-"),
-  );
+  const tempDir = fs.mkdtempSync(path.join(process.cwd(), ".tmp-original-chunker-"));
   execFileSync("unzip", ["-q", "src.zip", "-d", tempDir], {
     cwd: process.cwd(),
   });
@@ -37,10 +35,7 @@ function loadOriginalChunker() {
 }
 
 function stripCurrentPrefix(id: string): string {
-  return id.replace(
-    /^home_ha_automations:ceiling_daily_rhythm_presence\.yaml:/,
-    "",
-  );
+  return id.replace(/^home_ha_automations:ceiling_daily_rhythm_presence\.yaml:/, "");
 }
 
 function normalizeOriginal(chunk: OriginalChunk) {
@@ -71,9 +66,7 @@ function markdownTable(rows: string[][]): string {
 
   return rows
     .map((row, rowIndex) => {
-      const line = `| ${row
-        .map((cell, index) => cell.padEnd(widths[index] ?? 0))
-        .join(" | ")} |`;
+      const line = `| ${row.map((cell, index) => cell.padEnd(widths[index] ?? 0)).join(" | ")} |`;
       if (rowIndex === 0) {
         const separator = `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`;
         return `${line}\n${separator}`;
@@ -95,13 +88,8 @@ async function main() {
   }
 
   const inputContent = fs.readFileSync(INPUT_PATH, "utf8");
-  const freshOriginal = originalChunker(
-    inputContent,
-    INPUT_PATH,
-  ) as OriginalChunk[];
-  const savedOriginal = JSON.parse(
-    fs.readFileSync(OLD_CHUNKS_PATH, "utf8"),
-  ) as OriginalChunk[];
+  const freshOriginal = originalChunker(inputContent, INPUT_PATH) as OriginalChunk[];
+  const savedOriginal = JSON.parse(fs.readFileSync(OLD_CHUNKS_PATH, "utf8")) as OriginalChunk[];
   const currentResult = chunkHomeAssistantYamlWithDiagnostics(
     inputContent,
     path.basename(INPUT_PATH),
@@ -112,9 +100,7 @@ async function main() {
   const oldIds = freshOriginal.map((chunk) => chunk.chunk_id);
   const currentLogicalIds = current.map((chunk) => stripCurrentPrefix(chunk.id));
   const oldOnlyIds = oldIds.filter((id) => !currentLogicalIds.includes(id));
-  const currentOnlyLogicalIds = currentLogicalIds.filter(
-    (id) => !oldIds.includes(id),
-  );
+  const currentOnlyLogicalIds = currentLogicalIds.filter((id) => !oldIds.includes(id));
   const savedOldMatchesFreshOriginal =
     JSON.stringify(freshOriginal.map(normalizeOriginal)) ===
     JSON.stringify(savedOriginal.map(normalizeOriginal));
@@ -174,9 +160,7 @@ async function main() {
     },
     summaries: {
       originalObjectTypes: countBy(freshOriginal, (chunk) => chunk.object_type),
-      currentObjectTypes: countBy(current, (chunk) =>
-        String(chunk.provenance.objectType),
-      ),
+      currentObjectTypes: countBy(current, (chunk) => String(chunk.provenance.objectType)),
       currentCollections: countBy(current, (chunk) => chunk.collection),
     },
     oldOnlyIds,
@@ -218,13 +202,9 @@ async function main() {
       id,
       "",
       String(
-        current.find((chunk) => stripCurrentPrefix(chunk.id) === id)?.provenance
-          .objectType ?? "",
+        current.find((chunk) => stripCurrentPrefix(chunk.id) === id)?.provenance.objectType ?? "",
       ),
-      String(
-        current.find((chunk) => stripCurrentPrefix(chunk.id) === id)?.collection ??
-          "",
-      ),
+      String(current.find((chunk) => stripCurrentPrefix(chunk.id) === id)?.collection ?? ""),
     ]),
   ];
 

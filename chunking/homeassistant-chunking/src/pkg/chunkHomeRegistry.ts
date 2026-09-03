@@ -6,7 +6,7 @@ import {
   extractEntityIds,
   extractRooms,
   stableJson,
-} from "./knowledgeChunk";
+} from "./knowledgeChunk.js";
 
 function asArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
@@ -15,12 +15,7 @@ function asArray(value: unknown): unknown[] {
 function labelFor(value: unknown, fallback: string): string {
   if (!value || typeof value !== "object") return fallback;
   const obj = value as Record<string, unknown>;
-  return (
-    stringField(obj, "name") ??
-    stringField(obj, "id") ??
-    stringField(obj, "type") ??
-    fallback
-  );
+  return stringField(obj, "name") ?? stringField(obj, "id") ?? stringField(obj, "type") ?? fallback;
 }
 
 function stringField(obj: Record<string, unknown>, key: string): string | undefined {
