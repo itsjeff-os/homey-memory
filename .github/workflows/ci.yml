@@ -67,3 +67,5 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/validate-structure.mjs
+      - name: Check for duplicate files
+        run: node scripts/find-duplicates.mjs --fail-on-found

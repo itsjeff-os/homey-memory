@@ -14,7 +14,8 @@
     "test": "turbo run test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate-structure": "node scripts/validate-structure.mjs"
+    "validate-structure": "node scripts/validate-structure.mjs",
+    "find-duplicates": "node scripts/find-duplicates.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
