@@ -11,6 +11,6 @@ Visual and low-code workflow definitions for automation platforms.
 
 ## Conventions
 
-- Each workflow file is named descriptively: `<purpose>-<version>.json` or `<purpose>.md`.
-- Breaking changes to a workflow create a new versioned file rather than overwriting the old one.
+- Each workflow lives in a descriptively named subdirectory with the platform-specific export/config files documented in that subsection.
+- Breaking changes create a new versioned workflow directory rather than overwriting the previous export.
 - Credentials and API keys are never stored here — use environment variables or the platform's secret manager.
