@@ -8,7 +8,6 @@ function requestJson({ bridgeIp, appKey }, method, path, body) {
         hostname: bridgeIp,
         path,
         method,
-        rejectUnauthorized: false,
         headers: {
           "content-type": "application/json",
           "hue-application-key": appKey,

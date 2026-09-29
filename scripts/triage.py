@@ -82,6 +82,23 @@ def load_rules(path: Path) -> list[dict]:
     return data.get("rules", []) if data else []
 
 
+def resolve_section_dir(section: str) -> tuple[str, Path] | None:
+    """Resolve a section path only if it stays within the repository root."""
+    raw_section = str(section).strip()
+    if not raw_section or Path(raw_section).is_absolute():
+        return None
+
+    normalized_section = raw_section.rstrip("/")
+    resolved_path = (REPO_ROOT / normalized_section).resolve()
+
+    try:
+        resolved_path.relative_to(REPO_ROOT)
+    except ValueError:
+        return None
+
+    return normalized_section, resolved_path
+
+
 def classify(
     file_path: Path,
     front_matter: dict[str, Any],
@@ -94,13 +111,9 @@ def classify(
     Returns (section_path, reason).
     """
     # 1. Explicit destination in front-matter takes priority
-    destination = front_matter.get("destination", "").strip()
+    destination = str(front_matter.get("destination", "")).strip()
     if destination:
-        dest = destination.rstrip("/")
-        target = REPO_ROOT / dest
-        if target.is_dir():
-            return dest, f"explicit front-matter destination: {dest}"
-        # Destination doesn't exist — fall through to rules
+        return destination.rstrip("/"), f"explicit front-matter destination: {destination.rstrip('/')}"
 
     # 2. Tag and keyword matching
     file_tags = set()
@@ -198,7 +211,14 @@ def triage_file(
     body = strip_front_matter(text)
 
     section, reason = classify(file_path, front_matter, body, rules)
-    dest_dir = REPO_ROOT / section
+    resolved_section = resolve_section_dir(section)
+    if resolved_section is None:
+        invalid_section = section
+        section = UNSORTED_SECTION
+        dest_dir = UNSORTED_DIR
+        reason = f"invalid destination outside repo root: {invalid_section}"
+    else:
+        section, dest_dir = resolved_section
 
     if verbose:
         print(f"  {file_path.name} → {section} ({reason})")

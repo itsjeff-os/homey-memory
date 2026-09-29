@@ -1,16 +1,16 @@
-# Home Assistant
+# Home Assistant — Corpus
 
-Status: Home Assistant operational domain workspace
-Updated: 2026-05-26
+Entity definitions, domain references, and integration notes that form the HA knowledge corpus.
 
-This folder owns Home Assistant and adjacent smart-home documentation.
+## Structure
 
-Use this area for:
+```
+corpus/
+├── domains/           # Per-domain entity and service references (e.g. light.md, switch.md)
+├── integrations/      # Notes and configs for specific HA integrations
+└── entities/          # Entity ID lists and attribute maps
+```
 
-- Home Assistant state and naming work
-- MQTT and Mosquitto notes
-- Matter server notes
-- Node-RED notes
-- exports, inventories, and cleanup logs
+## Purpose
 
-Live Home Assistant state should be verified from the mini-PC before being documented as current.
+This corpus is used to ground LLM responses and automations in accurate, up-to-date Home Assistant entity and service definitions.

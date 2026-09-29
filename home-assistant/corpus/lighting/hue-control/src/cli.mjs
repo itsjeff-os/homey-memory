@@ -28,7 +28,6 @@ switch (command) {
     const lights = await hue.lights();
     console.log(JSON.stringify({
       bridgeIp: env.bridgeIp,
-      onePassword: env.onePassword,
       lightCount: lights.data.length
     }, null, 2));
     break;
