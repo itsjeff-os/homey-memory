@@ -1,0 +1,18 @@
+template:
+  - sensor:
+      - name: "Jeff Context"
+        unique_id: jeff_context
+        state: >
+          {% if is_state('binary_sensor.withings_sleep', 'on') %}
+            asleep
+          {% elif is_state('sensor.oura_activity_level', 'low') %}
+            resting
+          {% elif is_state('input_boolean.fp2_living_zone', 'on') %}
+            active_living
+          {% elif is_state('input_boolean.fp2_bedroom_zone', 'on') %}
+            active_bedroom
+          {% elif is_state('person.jeff', 'home') %}
+            home_idle
+          {% else %}
+            away
+          {% endif %}

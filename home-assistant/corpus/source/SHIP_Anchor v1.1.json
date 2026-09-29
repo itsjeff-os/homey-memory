@@ -1,0 +1,256 @@
+{
+  "anchor_version": "SHIP_Anchor_v1.1",
+  "supersedes": "SHIP_Anchor_v1",
+  "status": "ACTIVE",
+  "created_at": "2026-02-11",
+  "timezone": "Europe/London",
+  "purpose": "Introduce a versioned anchor system with explicit lifecycle/status semantics, decision principles, and rehydration protocol while keeping the technical architecture unchanged from v1.",
+  "decision_principles": {
+    "architecture_decisions_driven_by": [
+      "architectural integrity",
+      "expansion path clarity",
+      "technical feasibility",
+      "consistency with anchors",
+      "long-term correctness",
+      "risk minimization",
+      "privacy posture",
+      "scalability"
+    ],
+    "architecture_decisions_not_driven_by": [
+      "emotional state",
+      "conversational tone",
+      "novelty bias",
+      "time pressure"
+    ],
+    "communication_adapts_to": [
+      "pacing preferences",
+      "cognitive load",
+      "clarity needs",
+      "exploration depth"
+    ]
+  },
+  "rehydration_protocol": {
+    "canonical_reference": "This JSON document is the authoritative system snapshot for SHIP_Anchor_v1.1.",
+    "rehydrate_command_examples": [
+      "Rehydrate from SHIP_Anchor_v1.1",
+      "Rehydrate from SHIP_Anchor_v1.1.json",
+      "Return to SHIP_Anchor_v1.1"
+    ],
+    "conflict_rule": "If later conversation content conflicts with this anchor, treat the anchor as canonical unless a newer ACTIVE anchor supersedes it."
+  },
+  "versioning_framework": {
+    "naming": {
+      "major": "vN -> vN+1 for significant architectural/module changes",
+      "minor": "vN.M for additive refinements that do not change core architecture",
+      "patch": "vN.M.P for corrections/clarifications without semantic changes"
+    },
+    "anchor_lifecycle_states": [
+      "ACTIVE",
+      "EXPERIMENTAL",
+      "FROZEN",
+      "DEPRECATED",
+      "SUPERSEDED"
+    ],
+    "creation_triggers": [
+      "architecture module changes",
+      "data model/schema changes",
+      "deployment strategy changes",
+      "workflow/role logic changes",
+      "validation/simulation capability changes",
+      "explicit request to checkpoint"
+    ]
+  },
+  "system_goal": "AI-driven smart home intelligence platform combining Custom GPT, backend memory/validation/deployment systems, and Home Assistant integrations; extensible from Phase 1 through Phase 7.",
+  "architecture": {
+    "components": {
+      "custom_gpt": {
+        "roles": [
+          "planner",
+          "engineer"
+        ],
+        "features": [
+          "structured planning",
+          "deterministic JSON/YAML output",
+          "tool-driven backend interaction",
+          "error recovery"
+        ],
+        "tooling_contract": [
+          "get_home_model",
+          "update_home_model",
+          "validate_automation",
+          "deploy_automation",
+          "get_live_state"
+        ]
+      },
+      "responses_api_layer": {
+        "functions": [
+          "task orchestration",
+          "schema enforcement",
+          "structured multi-step processing"
+        ]
+      },
+      "backend_brain": {
+        "modules": {
+          "state_engine": [
+            "digital twin storage",
+            "preferences",
+            "history",
+            "structured home model API"
+          ],
+          "validation_engine": [
+            "YAML/JSON linting",
+            "conflict detection",
+            "loop prevention",
+            "capability validation"
+          ],
+          "deployment_engine": [
+            "Home Assistant API integration",
+            "MQTT/Zigbee2MQTT operations",
+            "scene execution"
+          ],
+          "simulation_engine": [
+            "occupancy prediction",
+            "automation path simulation",
+            "energy modeling"
+          ]
+        },
+        "note": "Simulation engine is optional for Phase 1; becomes active starting Phase 3+."
+      },
+      "persistence_layer": {
+        "database": "PostgreSQL (JSONB recommended)",
+        "tables": {
+          "rooms": [
+            "id",
+            "name",
+            "zone",
+            "metadata"
+          ],
+          "devices": [
+            "id",
+            "room_id",
+            "name",
+            "type",
+            "capabilities",
+            "network_info"
+          ],
+          "automations": [
+            "id",
+            "name",
+            "yaml",
+            "validated",
+            "version"
+          ],
+          "preferences": [
+            "id",
+            "scope",
+            "data"
+          ],
+          "audit_log": [
+            "id",
+            "timestamp",
+            "actor",
+            "action",
+            "payload",
+            "result"
+          ]
+        }
+      },
+      "integrations": {
+        "home_assistant": [
+          "REST API",
+          "WebSocket API"
+        ],
+        "protocols": [
+          "MQTT",
+          "Zigbee2MQTT",
+          "Thread/Matter bridge"
+        ],
+        "optional_integrations": [
+          "ONVIF cameras",
+          "energy monitoring systems"
+        ]
+      }
+    }
+  },
+  "digital_twin_model": {
+    "description": "Graph-based representation of home structure, device capabilities, automation dependencies, and (optionally) network/power topology.",
+    "nodes": [
+      "rooms",
+      "zones",
+      "devices",
+      "capabilities",
+      "automations"
+    ],
+    "edges": [
+      "device_to_room",
+      "room_to_zone",
+      "automation_targets_device",
+      "network_links",
+      "power_links"
+    ],
+    "supports": [
+      "simulation",
+      "conflict detection",
+      "predictive reasoning"
+    ]
+  },
+  "automation_lifecycle": [
+    "plan_generated",
+    "automation_generated",
+    "backend_validation",
+    "validation_feedback_to_gpt",
+    "gpt_revision_if_required",
+    "deployment",
+    "simulation_check",
+    "version_storage",
+    "monitoring"
+  ],
+  "deployment_strategy": {
+    "recommended": "Cloudflare Workers + Durable Objects",
+    "alternatives": [
+      "AWS Lambda + API Gateway + DynamoDB/RDS",
+      "Local Docker stack with Home Assistant"
+    ],
+    "security_model": {
+      "principles": [
+        "GPT has no direct access to Home Assistant; backend mediates all calls",
+        "backend enforces schema validation and safety constraints",
+        "all deployments are logged",
+        "optional human-approval mode for high-risk operations"
+      ]
+    },
+    "deployment_steps": [
+      "deploy backend API",
+      "connect GPT tools/actions",
+      "establish secure tunnel to Home Assistant (e.g., Cloudflare Tunnel)",
+      "implement validation layer",
+      "implement versioning and rollback",
+      "add simulation and optimization modules as needed"
+    ]
+  },
+  "phased_roadmap": {
+    "phase_1": "Conversational planner/engineer + persistent memory + code generation",
+    "phase_2": "Digital twin model",
+    "phase_3": "Validation pipelines and engineering automation",
+    "phase_4": "Live home integration and operations",
+    "phase_5": "Predictive and adaptive optimization",
+    "phase_6": "Experiential ambience and intent-to-environment engine",
+    "phase_7": "Multi-agent semi-autonomous living interface"
+  },
+  "diff_from_v1": {
+    "added": [
+      "versioning_framework (states, triggers, naming)",
+      "decision_principles (architecture vs communication separation)",
+      "rehydration_protocol (canonical conflict rule)",
+      "audit_log table (optional but recommended)",
+      "explicit status + created_at metadata"
+    ],
+    "unchanged": [
+      "core architecture components",
+      "digital twin concept",
+      "automation lifecycle",
+      "deployment strategy recommendation"
+    ],
+    "removed": []
+  }
+}

@@ -1,0 +1,19 @@
+automation:
+  - alias: "Adaptive Lighting - Relax Mode"
+    trigger:
+      - platform: state
+        entity_id: sensor.jeff_context
+        to: "resting"
+    action:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.relax_evening
+      - service: media_player.play_media
+        data:
+          media_content_id: "spotify:playlist:relax"
+          media_content_type: "music"
+        target:
+          entity_id: media_player.homepod
+      - service: switch.turn_on
+        target:
+          entity_id: switch.neom_diffuser

@@ -1,0 +1,216 @@
+s6-rc: info: service s6rc-oneshot-runner: starting
+s6-rc: info: service s6rc-oneshot-runner successfully started
+s6-rc: info: service fix-attrs: starting
+s6-rc: info: service fix-attrs successfully started
+s6-rc: info: service legacy-cont-init: starting
+s6-rc: info: service legacy-cont-init successfully started
+s6-rc: info: service legacy-services: starting
+services-up: info: copying legacy longrun home-assistant (no readiness notification)
+s6-rc: info: service legacy-services successfully started
+[33m2025-10-29 20:09:09.263 WARNING (SyncWorker_0) [annotatedyaml.constructors] YAML file /config/packages/open_plan.yaml contains duplicate key "automation". Check lines 81 and 166[0m
+[33m2025-10-29 20:09:09.299 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration adaptive_lighting which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant[0m
+[33m2025-10-29 20:09:09.304 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration dreo which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant[0m
+[33m2025-10-29 20:09:09.308 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant[0m
+[33m2025-10-29 20:09:09.312 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration scheduler which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant[0m
+[33m2025-10-29 20:09:17.757 WARNING (Recorder) [homeassistant.components.recorder.util] The system could not validate that the sqlite3 database at //config/home-assistant_v2.db was shutdown cleanly[0m
+[33m2025-10-29 20:09:17.883 WARNING (Recorder) [homeassistant.components.recorder.util] Ended unfinished session (id=43 from 2025-10-27 19:42:44.375906)[0m
+[31m2025-10-29 20:09:25.709 ERROR (MainThread) [homeassistant.components.sensor] The systemmonitor platform for the sensor integration does not support platform setup. Please remove it from your config.[0m
+[31m2025-10-29 20:09:27.378 ERROR (MainThread) [homeassistant.components.input_number] Platform input_number does not generate unique IDs. ID motion_timeout_default already exists - ignoring input_number.motion_timeout_default[0m
+[31m2025-10-29 20:09:27.380 ERROR (MainThread) [homeassistant.components.input_select] Platform input_select does not generate unique IDs. ID energy_state already exists - ignoring input_select.energy_state[0m
+[31m2025-10-29 20:09:27.381 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID sleep_mode already exists - ignoring input_boolean.sleep_mode[0m
+[31m2025-10-29 20:09:27.381 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID guest_mode already exists - ignoring input_boolean.guest_mode[0m
+[31m2025-10-29 20:09:27.381 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID away_mode already exists - ignoring input_boolean.away_mode[0m
+[31m2025-10-29 20:09:27.381 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID override_mode already exists - ignoring input_boolean.override_mode[0m
+[31m2025-10-29 20:09:27.382 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID focus_mode already exists - ignoring input_boolean.focus_mode[0m
+[31m2025-10-29 20:09:27.382 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID recovery_mode already exists - ignoring input_boolean.recovery_mode[0m
+[31m2025-10-29 20:09:27.384 ERROR (MainThread) [homeassistant.components.input_boolean] Platform input_boolean does not generate unique IDs. ID hydration_nags_enabled already exists - ignoring input_boolean.hydration_nags_enabled[0m
+[31m2025-10-29 20:09:28.404 ERROR (MainThread) [homeassistant.helpers.config_validation] The file integration does not support any configuration parameters, got {'sensors': [{'name': 'HA Database Size', 'file_path': '/config/home-assistant_v2.db', 'value_template': '{{ (value | float(0) / 1048576) | round(1) }}', 'unit_of_measurement': 'MB'}]}. Please remove the configuration parameters from your configuration.[0m
+[33m2025-10-29 20:09:32.005 WARNING (MainThread) [custom_components.adaptive_lighting.switch] Adaptive Lighting – Open Plan: Config mismatch: `multi_light_intercept` set to `true` requires `intercept` to be enabled. Adjusting config and continuing setup with `multi_light_intercept: false`.[0m
+[33m2025-10-29 20:09:48.915 WARNING (zeroconf-ServiceBrowser-_googlecast._tcp-122) [pychromecast.dial] Failed to determine cast type for host <unknown> (<urlopen error [Errno 111] Connection refused>) (services:{MDNSServiceInfo(name='LS01D-6052b5c9d5b475a48d9809007a982cac._googlecast._tcp.local.')})[0m
+[31m2025-10-29 20:09:51.387 ERROR (MainThread) [homeassistant.components.sensor] Error adding entity sensor.dreo_humidifier_status for domain sensor with platform dreo
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 676, in _async_add_entities
+    await self._async_add_entity(
+        entity, False, entity_registry, config_subentry_id
+    )
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 1002, in _async_add_entity
+    await entity.add_to_platform_finish()
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1382, in add_to_platform_finish
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1026, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[31m2025-10-29 20:09:51.418 ERROR (MainThread) [homeassistant.components.sensor] Error adding entity sensor.air_conditioner_status for domain sensor with platform dreo
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 676, in _async_add_entities
+    await self._async_add_entity(
+        entity, False, entity_registry, config_subentry_id
+    )
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 1002, in _async_add_entity
+    await entity.add_to_platform_finish()
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1382, in add_to_platform_finish
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1026, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.air_conditioner_status provides state value '1', which is not in the list of options provided[0m
+[32m2025-10-29 20:10:26.731 INFO (MainThread) [homeassistant.components.automation.new_automationin_bed_trial] Initialized trigger New automationIn bed trial[0m
+[32m2025-10-29 20:10:26.732 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Initialized trigger Open Plan Stretch Motion-activated Light[0m
+[32m2025-10-29 20:10:26.733 INFO (MainThread) [homeassistant.components.automation.lighting_phase_policy] Initialized trigger Lighting • Phase Policy[0m
+[32m2025-10-29 20:10:26.738 INFO (MainThread) [homeassistant.components.automation.lighting_lights_out] Initialized trigger Lighting • Lights Out[0m
+[32m2025-10-29 20:10:26.739 INFO (MainThread) [homeassistant.components.automation.fp2_zone_logger_identify_zones] Initialized trigger FP2 • Zone Logger (Identify Zones)[0m
+[32m2025-10-29 20:10:26.740 INFO (MainThread) [homeassistant.components.automation.open_plan_fp2_zone_lighting_phase_aware] Initialized trigger Open Plan • FP2 Zone Lighting (Phase-Aware)[0m
+[31m2025-10-29 20:24:18.303 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[33m2025-10-29 20:25:26.760 WARNING (SyncWorker_7) [annotatedyaml.constructors] YAML file /config/packages/open_plan.yaml contains duplicate key "automation". Check lines 81 and 166[0m
+[31m2025-10-29 20:40:25.383 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[31m2025-10-29 20:40:25.388 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[31m2025-10-29 20:40:25.395 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[31m2025-10-29 20:53:49.545 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m
+[32m2025-10-29 20:55:02.241 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Running automation actions[0m
+[32m2025-10-29 20:55:02.242 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Turn on the light[0m
+[32m2025-10-29 20:55:02.248 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait until there is no motion from device[0m
+[32m2025-10-29 20:55:02.250 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Initialized trigger[0m
+[32m2025-10-29 20:55:32.665 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait the number of seconds that has been set[0m
+[32m2025-10-29 20:55:55.039 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Restarting[0m
+[32m2025-10-29 20:55:55.051 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Running automation actions[0m
+[32m2025-10-29 20:55:55.051 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Turn on the light[0m
+[32m2025-10-29 20:55:55.054 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait until there is no motion from device[0m
+[32m2025-10-29 20:55:55.056 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Initialized trigger[0m
+[32m2025-10-29 20:56:24.680 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait the number of seconds that has been set[0m
+[32m2025-10-29 20:56:33.860 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Restarting[0m
+[32m2025-10-29 20:56:33.862 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Running automation actions[0m
+[32m2025-10-29 20:56:33.862 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Turn on the light[0m
+[32m2025-10-29 20:56:33.865 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait until there is no motion from device[0m
+[32m2025-10-29 20:56:33.866 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Initialized trigger[0m
+[32m2025-10-29 20:57:03.701 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Wait the number of seconds that has been set[0m
+[32m2025-10-29 20:59:03.704 INFO (MainThread) [homeassistant.components.automation.open_plan_stretch_motion_activated_light] Open Plan Stretch Motion-activated Light: Executing step Turn off the light[0m
+[31m2025-10-29 21:09:18.838 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 981, in async_update_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1151, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1088, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1032, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 663, in state
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Sensor sensor.dreo_humidifier_status provides state value 'manual', which is not in the list of options provided[0m

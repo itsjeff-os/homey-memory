@@ -1,0 +1,22 @@
+blueprint:
+  name: Context Skeleton
+  description: >
+    Provides core context helpers (sleep, guest, away, motion timeout) 
+    for use across all automations.
+  domain: automation
+  input:
+    sleep_mode:
+      name: Sleep Mode
+      selector:
+        entity:
+          domain: input_boolean
+    guest_mode:
+      name: Guest Mode
+      selector:
+        entity:
+          domain: input_boolean
+    motion_timeout:
+      name: Motion Timeout
+      selector:
+        entity:
+          domain: input_number

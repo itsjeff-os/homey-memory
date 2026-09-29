@@ -1,0 +1,87 @@
+🧭 System Summary: Smart Flat + Homelab
+
+🏠 Physical Overview
+	•	Property: 2-bedroom flat (~900 sqft)
+	•	Structure: Long hallway (Pass) connecting multiple zones
+	•	Room Codes (Canonical):
+	•	Core: Open Plan
+	•	Alpha: Bedroom 1
+	•	Beta: Bedroom 2
+	•	Chaos: Laundry/Utility
+	•	Splash: Rear Bathroom
+	•	Throne: Ensuite Bathroom
+	•	Pass: Hallway
+
+⸻
+
+🖥️ Compute
+	•	Primary Server: GMKtec Mini PC N95 (Intel N95, 16GB RAM, 512GB SSD)
+	•	OS: Ubuntu 24.04 LTS, UEFI boot
+	•	Docker:
+	•	Running: homeassistant
+	•	Docker state: Clean, minimal containers
+	•	Other services:
+	•	gpt-server-agent (inactive, Node.js)
+	•	Filesystem health: Clean, 2.4% disk used
+
+⸻
+
+🌐 Network Infrastructure
+	•	ISP: Hyperoptic (1 Gbps fibre, static IP)
+	•	Router: Unifi Cloud Gateway Ultra
+	•	Wi-Fi AP: Unifi u7-pro/6+ AP
+	•	Topology: Flat LAN (no VLANs), all devices same network
+	•	Cloudflare Tunnel: Active, serving domains:
+	•	itsjeff.org, flat-affairs.org
+	•	Critical Wired Devices:
+	•	Aqara Hub, Mini PC, Apple TV, Hue Bridge, Unifi AP, etc.
+
+⸻
+
+🏘️ Smart Home Overview
+
+Platforms:
+	•	Multi-domain:Primary: Home Assistant,  Apple HomeKit, Google Home
+
+Hubs/Bridges:
+	•	Aqara M3 Hub, Hue Bridge Pro, Switchbot Hub 3
+
+Devices (Estimate):
+	•	Total IoT devices: ~80–100
+	•	Sensors: Aqara FP1E/FP2, Hue motion/contact, etc.
+	•	Switches: Aqara, Hue dimmers, tap dials, Switchbot
+	•	Blinds: Aqara Curtain Controller, Switchbot rollers
+	•	Climate: Dreo, Levoit, Meaco AC
+	•	Audio/TV: Apple TV, Samsung Serif/UHD TVs, soundbar, HomePods
+	•	Health: Withings Sleep Mat, Eufy Scale, Oura Ring
+
+⸻
+
+📍 Room Snapshots
+
+Room		Code	
+Open Plan	Core	
+Bedroom 1	Alpha	
+Bedroom 2	Beta	
+Hallway		Pass
+Laundry/Utility		
+
+⸻
+
+⚠️ Constraints & Preferences
+
+Constraints:
+	•	Physical: Rental property — no destructive installs
+	•	Network: Flat LAN only, no VLANs yet
+	•	Canonical room codes must be used
+
+Preferences:
+	•	Wi-Fi: Seamless, roaming-friendly
+	•	Security: VLANs OK if automation isn’t broken
+	•	Compute: Clean Docker state, minimal clutter
+	•	Budget: Flexible but value-conscious
+
+⸻
+
+
+⸻

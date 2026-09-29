@@ -1,0 +1,150 @@
+
+{
+  "anchor_version": "SHIP_Anchor_v1",
+  "system_goal": "AI-driven smart home intelligence platform combining Custom GPT, backend memory/validation/deployment systems, and Home Assistant integrations.",
+  "architecture": {
+    "components": {
+      "custom_gpt": {
+        "roles": [
+          "planner",
+          "engineer"
+        ],
+        "features": [
+          "structured planning",
+          "deterministic JSON/YAML output",
+          "tool-driven backend interaction",
+          "error recovery"
+        ]
+      },
+      "responses_api_layer": {
+        "functions": [
+          "task orchestration",
+          "schema enforcement",
+          "structured multi-step processing"
+        ]
+      },
+      "backend_brain": {
+        "modules": {
+          "state_engine": [
+            "digital twin storage",
+            "preferences",
+            "history",
+            "structured home model API"
+          ],
+          "validation_engine": [
+            "YAML/JSON linting",
+            "conflict detection",
+            "loop prevention",
+            "capability validation"
+          ],
+          "deployment_engine": [
+            "Home Assistant API integration",
+            "MQTT/Zigbee2MQTT operations",
+            "scene execution"
+          ],
+          "simulation_engine": [
+            "occupancy prediction",
+            "automation path simulation",
+            "energy modeling"
+          ]
+        }
+      },
+      "persistence_layer": {
+        "database": "PostgreSQL (JSONB recommended)",
+        "tables": {
+          "rooms": [
+            "id",
+            "name",
+            "zone",
+            "metadata"
+          ],
+          "devices": [
+            "id",
+            "room_id",
+            "name",
+            "type",
+            "capabilities",
+            "network_info"
+          ],
+          "automations": [
+            "id",
+            "name",
+            "yaml",
+            "validated",
+            "version"
+          ],
+          "preferences": "user and system-level preferences"
+        }
+      },
+      "integrations": {
+        "home_assistant": [
+          "REST API",
+          "WebSocket API"
+        ],
+        "protocols": [
+          "MQTT",
+          "Zigbee2MQTT",
+          "Thread/Matter bridge",
+          "optional: ONVIF cameras, energy systems"
+        ]
+      }
+    }
+  },
+  "digital_twin_model": {
+    "description": "Graph-based representation of home structure and device topology.",
+    "nodes": [
+      "rooms",
+      "zones",
+      "devices",
+      "capabilities",
+      "automations"
+    ],
+    "edges": [
+      "device_to_room",
+      "room_to_zone",
+      "automation_targets_device",
+      "network_links",
+      "power_links"
+    ],
+    "supports": [
+      "simulation",
+      "conflict detection",
+      "predictive reasoning"
+    ]
+  },
+  "automation_lifecycle": [
+    "plan_generated",
+    "automation_generated",
+    "backend_validation",
+    "validation_feedback_to_gpt",
+    "gpt_revision_if_required",
+    "deployment",
+    "simulation_check",
+    "version_storage",
+    "monitoring"
+  ],
+  "deployment_strategy": {
+    "recommended": "Cloudflare Workers + Durable Objects",
+    "alternatives": [
+      "AWS Lambda + API Gateway + DynamoDB/RDS",
+      "Local Docker stack with HA"
+    ],
+    "deployment_steps": [
+      "deploy backend API",
+      "connect GPT tools",
+      "secure tunnel to Home Assistant",
+      "build validation layer",
+      "implement versioning and rollback",
+      "add simulation and optimization"
+    ]
+  },
+  "phased_roadmap": {
+    "phase_1": "Conversational planner/engineer + memory + code generation",
+    "phase_2": "Digital twin model",
+    "phase_3": "Validation pipelines",
+    "phase_4": "Live home integration",
+    "phase_5": "Predictive and adaptive optimization",
+    "phase_6": "Experiential ambience system",
+    "phase_7": "Multi-agent semi-autonomous environment"
+  }
+}

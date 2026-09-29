@@ -1,0 +1,153 @@
+blueprint:
+  name: Room Presence Lighting (Context-Aligned v2)
+  description: >
+    Context-aware room lighting that responds to presence while following the global Home Context
+    (normal, sleep, away, override). Integrates with Adaptive Lighting and includes optional logging.
+  domain: automation
+  input:
+    presence_entity:
+      name: Presence Sensor
+      selector:
+        entity:
+          domain: binary_sensor
+    light_target:
+      name: Light or Light Group
+      selector:
+        target:
+          entity:
+            domain: light
+    adaptive_switch:
+      name: Adaptive Lighting Switch (optional)
+      default: ""
+      selector:
+        entity:
+          domain: switch
+          multiple: false
+    home_context:
+      name: Home Context Sensor
+      default: sensor.home_context_stable
+      selector:
+        entity:
+          domain: sensor
+    off_delay:
+      name: Delay (minutes) before turning off lights when room empty
+      default: 2
+      selector:
+        number:
+          min: 0
+          max: 60
+          step: 1
+          unit_of_measurement: min
+    night_min_pct:
+      name: Minimum brightness during sleep context
+      default: 15
+      selector:
+        number:
+          min: 1
+          max: 100
+          step: 1
+          unit_of_measurement: '%'
+    enable_logging:
+      name: Enable Logbook Entries
+      default: false
+      selector:
+        boolean: {}
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input presence_entity
+
+variables:
+  light_target: !input light_target
+  adaptive_switch: !input adaptive_switch
+  home_context: !input home_context
+  off_delay: !input off_delay
+  night_min_pct: !input night_min_pct
+  enable_logging: !input enable_logging
+
+condition: []
+
+action:
+  - choose:
+      # Presence ON
+      - conditions:
+          - condition: state
+            entity_id: !input presence_entity
+            state: "on"
+        sequence:
+          - choose:
+              # ---- Override ----
+              - conditions:
+                  - condition: state
+                    entity_id: !input home_context
+                    state: "override"
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+
+              # ---- Sleep ----
+              - conditions:
+                  - condition: state
+                    entity_id: !input home_context
+                    state: "sleep"
+                sequence:
+                  - service: light.turn_on
+                    target: !input light_target
+                    data:
+                      brightness_pct: !input night_min_pct
+
+              # ---- Away ----
+              - conditions:
+                  - condition: state
+                    entity_id: !input home_context
+                    state: "away"
+                sequence:
+                  - service: light.turn_off
+                    target: !input light_target
+
+              # ---- Normal (default) ----
+              - conditions:
+                  - condition: state
+                    entity_id: !input home_context
+                    state: "normal"
+                sequence:
+                  - service: switch.turn_on
+                    target:
+                      entity_id: !input adaptive_switch
+                  - service: light.turn_on
+                    target: !input light_target
+          - choose:
+              - conditions: "{{ enable_logging }}"
+                sequence:
+                  - service: logbook.log
+                    data:
+                      name: "Room Lighting"
+                      message: >
+                        "{{ trigger.to_state.entity_id }} detected presence | Context: {{ states(home_context) }}"
+                      entity_id: !input light_target
+
+      # Presence OFF
+      - conditions:
+          - condition: state
+            entity_id: !input presence_entity
+            state: "off"
+        sequence:
+          - delay:
+              minutes: !input off_delay
+          - condition: state
+            entity_id: !input presence_entity
+            state: "off"
+          - service: light.turn_off
+            target: !input light_target
+          - choose:
+              - conditions: "{{ enable_logging }}"
+                sequence:
+                  - service: logbook.log
+                    data:
+                      name: "Room Lighting"
+                      message: >
+                        "Room empty for {{ off_delay }} min → lights off | Context: {{ states(home_context) }}"
+                      entity_id: !input light_target
