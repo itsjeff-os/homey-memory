@@ -4,7 +4,7 @@ Intake Triage — Automated file router for homey-memory.
 
 Scans intake/queue/ for files, classifies them using front-matter metadata
 and triage-rules.yaml, moves them to the correct section, and updates the
-destination section's README with an entry for the new file.
+repository README inventories from the files currently present.
 
 Usage:
     python scripts/triage.py                  # triage all queued files
@@ -18,13 +18,13 @@ Requires: PyYAML (pip install pyyaml)
 from __future__ import annotations
 
 import argparse
-import datetime
-import os
 import re
 import shutil
 import sys
 from pathlib import Path
 from typing import Any
+
+from generate_readmes import generate
 
 try:
     import yaml
@@ -131,48 +131,6 @@ def classify(
 
 
 # ---------------------------------------------------------------------------
-# README update
-# ---------------------------------------------------------------------------
-
-
-def update_section_readme(section_dir: Path, file_name: str, front_matter: dict[str, Any]) -> None:
-    """Append a new-file entry to the section's README."""
-    readme = section_dir / "README.md"
-    if not readme.exists():
-        return
-
-    date_str = front_matter.get("date", datetime.date.today().isoformat())
-    tags = front_matter.get("tags", [])
-    tag_str = ", ".join(str(t) for t in tags) if tags else ""
-    source = front_matter.get("source", "")
-
-    entry_parts = [f"- [`{file_name}`](./{file_name})"]
-    meta_parts = []
-    if date_str:
-        meta_parts.append(str(date_str))
-    if source:
-        meta_parts.append(f"source: {source}")
-    if tag_str:
-        meta_parts.append(f"tags: {tag_str}")
-    if meta_parts:
-        entry_parts.append(f" — {'; '.join(meta_parts)}")
-
-    entry = "".join(entry_parts) + "\n"
-
-    content = readme.read_text(encoding="utf-8")
-
-    # Append under a "## Filed Items" heading, creating it if needed
-    heading = "## Filed Items"
-    if heading in content:
-        # Insert after the heading line
-        content = content.replace(heading, f"{heading}\n{entry}", 1)
-    else:
-        content = content.rstrip("\n") + f"\n\n{heading}\n{entry}"
-
-    readme.write_text(content, encoding="utf-8")
-
-
-# ---------------------------------------------------------------------------
 # Triage pipeline
 # ---------------------------------------------------------------------------
 
@@ -225,9 +183,8 @@ def triage_file(
     shutil.move(str(file_path), str(processing_path))
     shutil.move(str(processing_path), str(final_path))
 
-    # Update destination README
-    if section != UNSORTED_SECTION:
-        update_section_readme(dest_dir, final_path.name, front_matter)
+    # Rebuild inventories from files, including the source and destination.
+    generate(REPO_ROOT)
 
     return final_path.name, section, reason
 

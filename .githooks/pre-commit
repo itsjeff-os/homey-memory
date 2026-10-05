@@ -1,0 +1,11 @@
+#!/bin/sh
+# Opt in with: git config core.hooksPath .githooks
+# Fail rather than stage unrelated or partially staged work automatically.
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+python3 scripts/generate_readmes.py
+if ! git diff --quiet -- '**/README.md' README.md ||
+   test -n "$(git ls-files --others --exclude-standard -- '**/README.md' README.md)"; then
+    echo 'README inventories regenerated. Review and stage them, then retry the commit.' >&2
+    exit 1
+fi
